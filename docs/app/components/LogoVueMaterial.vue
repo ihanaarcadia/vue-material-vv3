@@ -1,5 +1,10 @@
 <template>
-  <md-svg-loader class="logo-vue-material" :class="{ blending }" md-src="/assets/logo.svg" @md-loaded="svgLoaded" />
+  <md-svg-loader
+    class="logo-vue-material"
+    :class="{ blending }"
+    md-src="/assets/logo.svg"
+    @md-loaded="svgLoaded"
+  />
 </template>
 
 <style lang="scss">

@@ -1,5 +1,8 @@
 <template>
-  <td class="md-table-cell" :class="cellClasses">
+  <td
+    class="md-table-cell"
+    :class="cellClasses"
+  >
     <div class="md-table-cell-container">
       <slot />
     </div>
@@ -9,14 +12,15 @@
 <script>
   export default {
     name: 'MdTableCell',
+    
+    inject: ['MdTable'],//
     props: {
-      mdId: [String, Number],
-      mdLabel: String,
+      mdId: {type: [String, Number],default: () => ""},
+      mdLabel: {type: String,default: () => ""},
       mdNumeric: Boolean,
-      mdTooltip: String,
-      mdSortBy: String
+      mdTooltip: {type: String,default: () => ""},
+      mdSortBy: {type: String,default: () => ""}
     },
-    inject: ['MdTable'],
     data: () => ({
       index: null,
       parentNode: null
@@ -41,6 +45,19 @@
       mdTooltip () {
         this.setCellData()
       }
+    },
+    mounted () {
+      this.parentNode = this.$el.parentNode
+      this.updateAllCellData()
+    },
+    unmounted () {
+      const rowRemoved = this.$el.parentNode !== null
+
+      if (rowRemoved) {
+        return false
+      }
+
+      this.updateAllCellData()
     },
     methods: {
       setCellData ($vm = this) {
@@ -70,19 +87,6 @@
           this.setCellData($vm)
         })
       }
-    },
-    mounted () {
-      this.parentNode = this.$el.parentNode
-      this.updateAllCellData()
-    },
-    destroyed () {
-      const rowRemoved = this.$el.parentNode !== null
-
-      if (rowRemoved) {
-        return false
-      }
-
-      this.updateAllCellData()
     }
   }
 </script>

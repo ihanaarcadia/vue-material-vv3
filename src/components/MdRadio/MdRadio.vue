@@ -1,12 +1,30 @@
 <template>
-  <div class="md-radio" :class="[$mdActiveTheme, radioClasses]">
-    <div class="md-radio-container" @click.stop="toggleCheck">
-      <md-ripple md-centered :md-active.sync="rippleActive" :md-disabled="disabled">
-        <input type="radio" v-bind="{ id, name, disabled, required, value, checked: isSelected }">
+  <div
+    class="md-radio"
+    :class="[$mdActiveTheme, radioClasses]"
+  >
+    <div
+      class="md-radio-container"
+      @click.stop="toggleCheck"
+    >
+      <md-ripple
+        v-model:md-active="rippleActive"
+        md-centered
+        :md-disabled="disabled"
+      >
+        <input
+          type="radio"
+          v-bind="{ id, name, disabled, required, value, checked: isSelected }"
+        >
       </md-ripple>
     </div>
 
-    <label :for="id" class="md-radio-label" v-if="$slots.default" @click.prevent="toggleCheck">
+    <label
+      v-if="$slots.default"
+      :for="id"
+      class="md-radio-label"
+      @click.prevent="toggleCheck"
+    >
       <slot />
     </label>
   </div>
@@ -55,6 +73,7 @@
         }
       }
     },
+    emits: ['change'],
     methods: {
       toggleCheck () {
         if (!this.disabled) {

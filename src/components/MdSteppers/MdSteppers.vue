@@ -1,11 +1,27 @@
 <template>
-  <div class="md-steppers" :class="[steppersClasses, $mdActiveTheme]">
-    <div class="md-steppers-navigation" v-if="!mdVertical">
-      <md-step-header v-for="(_, index) in MdSteppers.items" :key="index" :index="index" />
+  <div
+    class="md-steppers"
+    :class="[steppersClasses, $mdActiveTheme]"
+  >
+    <div
+      v-if="!mdVertical"
+      class="md-steppers-navigation"
+    >
+      <md-step-header
+        v-for="(_, index) in MdSteppers.items"
+        :key="index"
+        :index="index"
+      />
     </div>
 
-    <div class="md-steppers-wrapper" :style="contentStyles">
-      <div class="md-steppers-container" :style="containerStyles">
+    <div
+      class="md-steppers-wrapper"
+      :style="contentStyles"
+    >
+      <div
+        class="md-steppers-container"
+        :style="containerStyles"
+      >
         <slot />
       </div>
     </div>
@@ -22,6 +38,13 @@
     name: 'MdSteppers',
     components: {
       MdStepHeader
+    },
+    
+    
+    
+    
+    provide () {
+      return { MdSteppers: this.MdSteppers }
     },
     props: {
       mdSyncRoute: Boolean,
@@ -49,9 +72,7 @@
         }
       }
     },
-    provide () {
-      return { MdSteppers: this.MdSteppers }
-    },
+    
     computed: {
       steppersClasses () {
         return {
@@ -96,6 +117,7 @@
         this.$nextTick(this.setActiveButtonEl)
       }
     },
+    emits: ['md-changed','update:mdActiveStep'],
     methods: {
       hasActiveStep () {
         return this.MdSteppers.activeStep || this.mdActiveStep

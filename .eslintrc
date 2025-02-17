@@ -10,12 +10,19 @@
     "vue"
   ],
   "extends": [
-    "plugin:vue/essential"
+"plugin:vue/vue3-recommended"
   ],
   "env": {
     "jest/globals": true
   },
   "rules": {
+'vue/order-in-components': 'off',
+'vue/require-prop-types': 'off',
+'vue/prop-name-casing': 'off',
+'vue/require-explicit-emits': 'off',
+'vue/component-tags-order': 'off',
+'vue/require-default-prop': 'off',
+'vue/no-v-html': 'off',
     "semi": ["warn", "never"],
     "space-before-function-paren": ["warn"],
     "arrow-parens": 0,
@@ -60,5 +67,6 @@
     "vue/require-v-for-key": 0,
     "vue/html-closing-bracket-spacing": ["error"],
     "vue/no-unused-components": "off"
+	
   }
 }

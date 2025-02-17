@@ -1,7 +1,17 @@
 <template>
-  <md-popover :md-settings="popperSettings" :md-active="shouldRender">
-    <transition name="md-tooltip" v-if="shouldRender">
-      <div class="md-tooltip" :class="[tooltipClasses, $mdActiveTheme]" :style="tooltipStyles">
+  <md-popover
+    :md-settings="popperSettings"
+    :md-active="shouldRender"
+  >
+    <transition
+      v-if="shouldRender"
+      name="md-tooltip"
+    >
+      <div
+        class="md-tooltip"
+        :class="[tooltipClasses, $mdActiveTheme]"
+        :style="tooltipStyles"
+      >
         <slot />
       </div>
     </transition>
@@ -60,6 +70,7 @@
         this.$emit('update:mdActive', shouldRender)
       }
     },
+    emits: ['update:mdActive'],
     methods: {
       show () {
         this.shouldRender = true

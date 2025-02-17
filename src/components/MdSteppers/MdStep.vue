@@ -1,8 +1,15 @@
 <template>
   <div class="md-stepper">
-    <md-step-header v-if="MdSteppers.isVertical" :index="id" />
+    <md-step-header
+      v-if="MdSteppers.isVertical"
+      :index="id"
+    />
 
-    <div :class="['md-stepper-content', { 'md-active': isActive }]" :tabindex="tabIndex" v-show="isActive">
+    <div
+      v-show="isActive"
+      :class="['md-stepper-content', { 'md-active': isActive }]"
+      :tabindex="tabIndex"
+    >
       <slot />
     </div>
   </div>
@@ -19,30 +26,23 @@
       MdStepHeader
     },
     mixins: [MdRouterLink],
+    inject: ['MdSteppers'],
     props: {
       id: {
         type: String,
         default: () => 'md-stepper-' + MdUuid()
       },
-      href: [String, Number],
-      mdLabel: String,
-      mdDescription: String,
-      mdError: String,
+      href: {type: [String, Number],default: () => ""},
+      mdLabel: {type: String,default: () => ""},
+      mdDescription: {type: String,default: () => ""},
+      mdError: {type: String,default: () => ""},
       mdDone: Boolean,
       mdEditable: {
         type: Boolean,
         default: true
       }
     },
-    inject: ['MdSteppers'],
-    watch: {
-      $props: {
-        deep: true,
-        handler () {
-          this.setStepperData()
-        }
-      }
-    },
+    emits: ['update:mdError','update:mdDone'],
     computed: {
       isActive () {
         return this.id === this.MdSteppers.activeStep
@@ -52,6 +52,21 @@
           ? -1
           : false
       }
+    },
+    watch: {
+      $props: {
+        deep: true,
+        handler () {
+          this.setStepperData()
+        }
+      }
+    },
+    created () {
+      this.setStepperData()
+      this.setupWatchers()
+    },
+    beforeUnmount () {
+      this.$delete(this.MdSteppers.items, this.id)
     },
     methods: {
       getPropValues () {
@@ -83,7 +98,7 @@
           done: this.mdDone,
           editable: this.mdEditable,
           props: this.getPropValues(),
-          events: this.$listeners
+          
         })
       },
       setupWatchers () {
@@ -104,13 +119,6 @@
         )
       }
     },
-    created () {
-      this.setStepperData()
-      this.setupWatchers()
-    },
-    beforeDestroy () {
-      this.$delete(this.MdSteppers.items, this.id)
-    },
     render (createElement) {
       let stepperAttrs = {
         staticClass: 'md-stepper',
@@ -118,7 +126,7 @@
           ...this.$attrs,
           id: this.id
         },
-        on: this.$listeners
+        
       }
 
       if (this.$router && this.to) {
@@ -127,7 +135,7 @@
         stepperAttrs.props = this.$props
       }
 
-      return createElement('div', stepperAttrs, this.$slots.default)
+      return createElement('div', stepperAttrs, this.$slots.default())
     }
   }
 </script>

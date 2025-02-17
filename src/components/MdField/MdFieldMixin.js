@@ -77,6 +77,7 @@ export default {
       this.localValue = val
     }
   },
+  emits: ['input'],
   methods: {
     clearField () {
       this.$el.value = ''

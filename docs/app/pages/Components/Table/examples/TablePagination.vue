@@ -1,24 +1,48 @@
 <template>
   <div>
-    <md-table v-model="paginatedUsers" md-card md-sort="name" md-sort-order="asc">
+    <md-table
+      v-model="paginatedUsers"
+      md-card
+      md-sort="name"
+      md-sort-order="asc"
+    >
       <md-table-toolbar>
-        <h1 class="md-title">Users</h1>
+        <h1 class="md-title">
+          Users
+        </h1>
       </md-table-toolbar>
 
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="ID" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Email">{{ item.email }}</md-table-cell>
-        <md-table-cell md-label="Gender">{{ item.gender }}</md-table-cell>
-        <md-table-cell md-label="Job Title">{{ item.title }}</md-table-cell>
+      <md-table-row
+        #md-table-row
+        slot-scope="{ item }"
+      >
+        <md-table-cell
+          md-label="ID"
+          md-numeric
+        >
+          {{ item.id }}
+        </md-table-cell>
+        <md-table-cell md-label="Name">
+          {{ item.name }}
+        </md-table-cell>
+        <md-table-cell md-label="Email">
+          {{ item.email }}
+        </md-table-cell>
+        <md-table-cell md-label="Gender">
+          {{ item.gender }}
+        </md-table-cell>
+        <md-table-cell md-label="Job Title">
+          {{ item.title }}
+        </md-table-cell>
       </md-table-row>
 
       <md-table-pagination
+        v-model:md-paginated-data="paginatedUsers"
         :md-page-size="2"
         :md-page-options="[1,2,3,4,5,6]"
         :md-update="updatePagination"
         :md-data="users"
-        :md-paginated-data.sync="paginatedUsers" />
+      />
     </md-table>
   </div>
 </template>

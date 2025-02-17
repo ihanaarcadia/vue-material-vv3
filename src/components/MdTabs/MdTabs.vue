@@ -1,6 +1,13 @@
 <template>
-  <div class="md-tabs" :class="[tabsClasses, $mdActiveTheme]">
-    <div class="md-tabs-navigation" :class="navigationClasses" ref="navigation">
+  <div
+    class="md-tabs"
+    :class="[tabsClasses, $mdActiveTheme]"
+  >
+    <div
+      ref="navigation"
+      class="md-tabs-navigation"
+      :class="navigationClasses"
+    >
       <md-button
         v-for="({ id, label, props, icon, disabled, data, events }, index) in orderedItems"
         :key="index"
@@ -12,23 +19,53 @@
         :disabled="disabled"
         v-bind="props"
         v-on="events"
-        @click.native="setActiveTab(id)">
-        <slot name="md-tab" :tab="{ label, icon, data }" v-if="$scopedSlots['md-tab']"></slot>
+        @click="setActiveTab(id)"
+      >
+        <slot
+          v-if="$slots['md-tab']"
+          name="md-tab"
+          :tab="{ label, icon, data }"
+        />
 
         <template v-else>
-          <template v-if="!icon">{{ label }}</template>
+          <template v-if="!icon">
+            {{ label }}
+          </template>
           <template v-else>
-            <md-icon class="md-tab-icon" v-if="isAssetIcon(icon)" :md-src="icon"></md-icon>
-            <md-icon class="md-tab-icon" v-else>{{ icon }}</md-icon>
+            <md-icon
+              v-if="isAssetIcon(icon)"
+              class="md-tab-icon"
+              :md-src="icon"
+            />
+            <md-icon
+              v-else
+              class="md-tab-icon"
+            >
+              {{ icon }}
+            </md-icon>
             <span class="md-tab-label">{{ label }}</span>
           </template>
         </template>
       </md-button>
-      <span class="md-tabs-indicator" :style="indicatorStyles" :class="indicatorClass" ref="indicator"></span>
+      <span
+        ref="indicator"
+        class="md-tabs-indicator"
+        :style="indicatorStyles"
+        :class="indicatorClass"
+      />
     </div>
 
-    <md-content ref="tabsContent" class="md-tabs-content" :style="contentStyles" v-show="hasContent">
-      <div ref="tabsContainer" class="md-tabs-container" :style="containerStyles">
+    <md-content
+      v-show="hasContent"
+      ref="tabsContent"
+      class="md-tabs-content"
+      :style="contentStyles"
+    >
+      <div
+        ref="tabsContainer"
+        class="md-tabs-container"
+        :style="containerStyles"
+      >
         <slot />
       </div>
     </md-content>
@@ -67,6 +104,15 @@
       MdButton,
       MdContent
     },
+    
+    
+    
+    
+    provide () {
+      return {
+        MdTabs: this.MdTabs
+      }
+    },
     props: {
       mdAlignment: {
         type: String,
@@ -100,11 +146,7 @@
       activeButtonEl: null,
       orderedIds: []
     }),
-    provide () {
-      return {
-        MdTabs: this.MdTabs
-      }
-    },
+    
     computed: {
       orderedItems () {
         return this.orderedIds.map(tabId => this.MdTabs.items.get(tabId))
@@ -158,6 +200,7 @@
         }
       }
     },
+    emits: ['md-changed'],
     methods: {
       isActiveTabId (id) {
         // A tab ID could be NaN (this is a valid Number value), but NaN is not equal to itself

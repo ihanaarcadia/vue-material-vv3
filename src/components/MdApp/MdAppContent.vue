@@ -1,9 +1,17 @@
 <template>
-  <md-card class="md-app-content md-flex" v-bind="$attrs" v-on="$listeners" v-if="showCard">
+  <md-card
+    v-if="showCard"
+    class="md-app-content md-flex"
+    v-bind="$attrs"
+  >
     <slot />
   </md-card>
 
-  <md-content class="md-app-content md-flex" v-bind="$attrs" v-on="$listeners" v-else>
+  <md-content
+    v-else
+    class="md-app-content md-flex"
+    v-bind="$attrs"
+  >
     <slot />
   </md-content>
 </template>

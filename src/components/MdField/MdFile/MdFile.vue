@@ -1,16 +1,27 @@
 <template>
   <div class="md-file">
-    <md-file-icon class="md-file-icon" :class="iconClass" @click.native="openPicker" />
+    <md-file-icon
+      class="md-file-icon"
+      :class="iconClass"
+      @click="openPicker"
+    />
 
     <input
+      v-model="model"
       class="md-input"
       readonly
-      v-model="model"
       v-bind="{ disabled, required, placeholder }"
       @click="openPicker"
-      @blur="onBlur">
+      @blur="onBlur"
+    >
 
-    <input type="file" ref="inputFile" v-bind="attributes" v-on="$listeners" @change="onChange" />
+    <input
+      ref="inputFile"
+      type="file"
+      v-bind="attributes"
+      
+      @change="onChange"
+    >
   </div>
 </template>
 
@@ -24,6 +35,8 @@
     components: {
       MdFileIcon
     },
+    mixins: [MdFieldMixin],
+    inject: ['MdField'],
     props: {
       id: {
         type: String,
@@ -31,6 +44,7 @@
       },
       name: String
     },
+    emits: ['md-change'],
     computed: {
       iconClass () {
         return {
@@ -38,8 +52,12 @@
         }
       }
     },
-    mixins: [MdFieldMixin],
-    inject: ['MdField'],
+    created () {
+      this.MdField.file = true
+    },
+    beforeUnmount () {
+      this.MdField.file = false
+    },
     methods: {
       getMultipleName (files) {
         let names = [];
@@ -76,12 +94,6 @@
         this.model = this.getFileName(files, target)
         this.$emit('md-change', files || target.value)
       }
-    },
-    created () {
-      this.MdField.file = true
-    },
-    beforeDestroy () {
-      this.MdField.file = false
     }
   }
 </script>

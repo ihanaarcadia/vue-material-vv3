@@ -1,7 +1,14 @@
 <template>
-  <md-table-head class="md-table-cell-selection" v-if="selectableCount">
+  <md-table-head
+    v-if="selectableCount"
+    class="md-table-cell-selection"
+  >
     <div class="md-table-cell-container">
-      <md-checkbox :model="allSelected" :disabled="isDisabled" @change="onChange" />
+      <md-checkbox
+        :model="allSelected"
+        :disabled="isDisabled"
+        @change="onChange"
+      />
     </div>
   </md-table-head>
 </template>
@@ -14,7 +21,7 @@
     components: {
       MdTableHead
     },
-    inject: ['MdTable'],
+    
     computed: {
       selectableCount () {
         return Object.keys(this.selectable).length

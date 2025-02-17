@@ -1,12 +1,22 @@
 <template>
-  <div class="md-list-item-expand" :class="expandClasses">
-    <md-list-item-content :md-disabled="isDisabled" @click.native="toggleExpand">
+  <div
+    class="md-list-item-expand"
+    :class="expandClasses"
+  >
+    <md-list-item-content
+      :md-disabled="isDisabled"
+      @click="toggleExpand"
+    >
       <slot />
 
       <md-arrow-down-icon class="md-list-expand-icon" />
     </md-list-item-content>
 
-    <div class="md-list-expand" ref="listExpand" :style="expandStyles">
+    <div
+      ref="listExpand"
+      class="md-list-expand"
+      :style="expandStyles"
+    >
       <slot name="md-expand" />
     </div>
   </div>
@@ -24,19 +34,49 @@
     },
     mixins: [MdListItemMixin],
     inject: ['MdList'],
+    props: {
+      mdExpanded: Boolean
+    },
+    emits: ['update:mdExpanded'],
     data: () => ({
       expandStyles: {},
       showContent: false
     }),
-    props: {
-      mdExpanded: Boolean
-    },
     computed: {
       expandClasses () {
         return {
           'md-active': this.showContent
         }
       }
+    },
+    watch: {
+      mdExpanded () {
+        if (this.mdExpanded) {
+          this.open()
+        } else {
+          this.close()
+        }
+      },
+      showContent () {
+        let expanded = this.showContent
+        this.$emit('update:mdExpanded', expanded)
+        this.$nextTick(() => this.$emit(expanded ? 'md-expanded' : 'md-collapsed'))
+
+        if (expanded) {
+          this.MdList.expandATab(this)
+        }
+      }
+    },
+    created () {
+      this.MdList.pushExpandable(this)
+    },
+    mounted () {
+      if (this.mdExpanded) {
+        this.open()
+      }
+    },
+    beforeUnmount () {
+      this.MdList.removeExpandable(this)
     },
     methods: {
       getChildrenSize () {
@@ -86,35 +126,6 @@
           this.showContent = false
         })
       }
-    },
-    watch: {
-      mdExpanded () {
-        if (this.mdExpanded) {
-          this.open()
-        } else {
-          this.close()
-        }
-      },
-      showContent () {
-        let expanded = this.showContent
-        this.$emit('update:mdExpanded', expanded)
-        this.$nextTick(() => this.$emit(expanded ? 'md-expanded' : 'md-collapsed'))
-
-        if (expanded) {
-          this.MdList.expandATab(this)
-        }
-      }
-    },
-    created () {
-      this.MdList.pushExpandable(this)
-    },
-    mounted () {
-      if (this.mdExpanded) {
-        this.open()
-      }
-    },
-    beforeDestroy () {
-      this.MdList.removeExpandable(this)
     }
   }
 </script>

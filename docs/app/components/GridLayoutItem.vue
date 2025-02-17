@@ -1,9 +1,18 @@
 <template>
-  <router-link :to="href" :title="title" class="grid-layout-item">
-    <component class="grid-layout-item-icon" :is="icon" />
+  <router-link
+    :to="href"
+    :title="title"
+    class="grid-layout-item"
+  >
+    <component
+      :is="icon"
+      class="grid-layout-item-icon"
+    />
 
     <div class="grid-layout-item-info">
-      <h2 class="grid-layout-item-title">{{ title }}</h2>
+      <h2 class="grid-layout-item-title">
+        {{ title }}
+      </h2>
       <div class="grid-layout-item-description">
         <slot />
       </div>

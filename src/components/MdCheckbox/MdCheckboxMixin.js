@@ -72,6 +72,7 @@ export default {
       return this.$options.propsData.hasOwnProperty('value')
     }
   },
+  emits: ['change'],
   methods: {
     removeItemFromModel (newModel) {
       const index = newModel.indexOf(this.value)

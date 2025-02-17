@@ -1,13 +1,23 @@
 <template>
-  <div class="md-badge-content" v-if="hasDefaultSlot">
+  <div
+    v-if="hasDefaultSlot"
+    class="md-badge-content"
+  >
     <slot />
-    <md-badge-standalone :class="badgeClasses" :style="styles">
+    <md-badge-standalone
+      :class="badgeClasses"
+      :style="styles"
+    >
       <div>
         {{ mdContent }}
       </div>
     </md-badge-standalone>
   </div>
-  <md-badge-standalone :class="badgeClasses" :style="styles" v-else>
+  <md-badge-standalone
+    v-else
+    :class="badgeClasses"
+    :style="styles"
+  >
     {{ mdContent }}
   </md-badge-standalone>
 </template>
@@ -37,7 +47,7 @@
     },
     computed: {
       hasDefaultSlot () {
-        return !!this.$slots.default
+        return !!this.$slots.default()
       },
       badgeClasses () {
         const staticClass = this.getStaticClass()

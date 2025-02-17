@@ -10,6 +10,15 @@ const mdAppModes = [
 ]
 
 export default {
+  
+  
+  
+  
+  provide () {
+    return {
+      MdApp: this.MdApp
+    }
+  },
   props: {
     mdMode: {
       type: String,
@@ -54,11 +63,7 @@ export default {
       }
     }
   }),
-  provide () {
-    return {
-      MdApp: this.MdApp
-    }
-  },
+  
   computed: {
     isFixed () {
       return this.mdMode && this.mdMode !== 'fixed'

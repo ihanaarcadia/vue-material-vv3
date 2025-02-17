@@ -20,7 +20,7 @@ export default {
     }
   },
   render () {
-    const defaultSlot = this.$slots.default
+    const defaultSlot = this.$slots.default()
     if (defaultSlot && defaultSlot[0]) {
       if (this.mdKeepAlive) {
         defaultSlot[0].data.directives = [{ name: 'show', value: this.mdValue }]

@@ -1,7 +1,10 @@
 <template>
   <footer class="main-footer">
     <div class="main-footer-container">
-      <div class="main-footer-section" center>
+      <div
+        class="main-footer-section"
+        center
+      >
         <ul class="md-list">
           <h4>About</h4>
           <p>Vue Material is simple, lightweight and built exactly according to the Google Material Design specs.</p>
@@ -9,33 +12,46 @@
         <ul class="md-list">
           <h4>Links</h4>
           <li>
-            <router-link to="/license">{{ $t('pages.license.title') }}</router-link>
+            <router-link to="/license">
+              {{ $t('pages.license.title') }}
+            </router-link>
           </li>
           <li>
-            <router-link to="/premium-themes">Premium Themes</router-link>
+            <router-link to="/premium-themes">
+              Premium Themes
+            </router-link>
           </li>
           <li>
-            <router-link to="/getting-started">Docs</router-link>
+            <router-link to="/getting-started">
+              Docs
+            </router-link>
           </li>
         </ul>
 
         <ul class="md-list">
           <h4>More information</h4>
           <li>
-            <router-link to="/about">{{ $t('aboutMaterial') }}</router-link>
+            <router-link to="/about">
+              {{ $t('aboutMaterial') }}
+            </router-link>
           </li>
           <li>
-            <a href="https://discordapp.com/invite/vuematerial" target="_blank">Discord</a>
+            <a
+              href="https://discordapp.com/invite/vuematerial"
+              target="_blank"
+            >Discord</a>
           </li>
 
           <li>
-            <a href="https://github.com/vuematerial/vue-material" target="_blank">GitHub</a>
+            <a
+              href="https://github.com/vuematerial/vue-material"
+              target="_blank"
+            >GitHub</a>
           </li>
 
           <!-- <li>
             <router-link to="">Open Collective</router-link>
           </li> -->
-
         </ul>
       </div>
 
@@ -43,10 +59,17 @@
       <div class="main-footer-section">
         <logo-vue-material />
 
-        <a href="https://github.com/marcosmoura" target="_blank">
+        <a
+          href="https://github.com/marcosmoura"
+          target="_blank"
+        >
           {{ $t('madeWith') }} <span class="red">❤</span> {{ $t('by') }} Marcos Moura.
         </a>
-        <a href="https://www.creative-tim.com/?ref=vuematerial.io" target="_blank" class="ml-0">Sponsored by Creative Tim</a>
+        <a
+          href="https://www.creative-tim.com/?ref=vuematerial.io"
+          target="_blank"
+          class="ml-0"
+        >Sponsored by Creative Tim</a>
       </div>
     </div>
   </footer>

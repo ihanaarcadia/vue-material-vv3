@@ -1,8 +1,8 @@
 <template>
   <div class="md-layout-vertical md-gutter">
-    <div class="md-layout-item"></div>
-    <div class="md-layout-item"></div>
-    <div class="md-layout-item"></div>
+    <div class="md-layout-item" />
+    <div class="md-layout-item" />
+    <div class="md-layout-item" />
   </div>
 </template>
 

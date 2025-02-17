@@ -1,17 +1,41 @@
 <template>
-  <div class="md-field" :class="[$mdActiveTheme, fieldClasses]" @blur="onBlur">
+  <div
+    class="md-field"
+    :class="[$mdActiveTheme, fieldClasses]"
+    @blur="onBlur"
+  >
     <slot />
 
-    <span class="md-count" v-if="hasCounter">{{ valueLength }} / {{ MdField.maxlength || MdField.counter }}</span>
+    <span
+      v-if="hasCounter"
+      class="md-count"
+    >{{ valueLength }} / {{ MdField.maxlength || MdField.counter }}</span>
 
-    <transition name="md-input-action" appear>
-      <md-button tabindex="-1" class="md-icon-button md-dense md-input-action md-clear" @click="clearInput" v-if="hasValue && mdClearable" :disabled="MdField.disabled">
+    <transition
+      name="md-input-action"
+      appear
+    >
+      <md-button
+        v-if="hasValue && mdClearable"
+        tabindex="-1"
+        class="md-icon-button md-dense md-input-action md-clear"
+        :disabled="MdField.disabled"
+        @click="clearInput"
+      >
         <md-clear-icon />
       </md-button>
     </transition>
 
-    <transition name="md-input-action" appear>
-      <md-button tabindex="-1" class="md-icon-button md-dense md-input-action md-toggle-password" @click="togglePassword" v-if="hasPasswordToggle">
+    <transition
+      name="md-input-action"
+      appear
+    >
+      <md-button
+        v-if="hasPasswordToggle"
+        tabindex="-1"
+        class="md-icon-button md-dense md-input-action md-toggle-password"
+        @click="togglePassword"
+      >
         <md-password-on-icon v-if="MdField.togglePassword" />
         <md-password-off-icon v-else />
       </md-button>
@@ -31,6 +55,15 @@
       MdClearIcon,
       MdPasswordOffIcon,
       MdPasswordOnIcon
+    },
+    
+    
+    
+    
+    provide () {
+      return {
+        MdField: this.MdField
+      }
     },
     props: {
       mdInline: Boolean,
@@ -64,11 +97,7 @@
         hasInvalidValue: false
       }
     }),
-    provide () {
-      return {
-        MdField: this.MdField
-      }
-    },
+    
     computed: {
       stringValue () {
         return (this.MdField.value || this.MdField.value === 0) && this.MdField.value.toString()
@@ -107,6 +136,7 @@
         }
       }
     },
+    emits: ['md-clear'],
     methods: {
       clearInput () {
         this.MdField.clear = true

@@ -1,8 +1,20 @@
 <template>
-  <div class="md-drawer" :class="[$mdActiveTheme, drawerClasses]">
+  <div
+    class="md-drawer"
+    :class="[$mdActiveTheme, drawerClasses]"
+  >
     <slot />
-    <md-overlay :md-active="mdActive" @click="closeDrawer" v-if="mdFixed" />
-    <md-overlay :md-active="mdActive" @click="closeDrawer" md-attach-to-parent v-else />
+    <md-overlay
+      v-if="mdFixed"
+      :md-active="mdActive"
+      @click="closeDrawer"
+    />
+    <md-overlay
+      v-else
+      :md-active="mdActive"
+      md-attach-to-parent
+      @click="closeDrawer"
+    />
   </div>
 </template>
 
@@ -102,6 +114,7 @@
         return this.$el.parentNode
       }
     },
+    emits: ['md-opened','md-closed','update:mdActive'],
     methods: {
       closeDrawer () {
         this.$emit('update:mdActive', false)

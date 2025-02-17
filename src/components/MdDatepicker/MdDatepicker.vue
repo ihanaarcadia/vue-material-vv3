@@ -1,7 +1,21 @@
 <template>
-  <md-field :class="['md-datepicker', { 'md-native': !mdOverrideNative }]" :md-clearable="mdClearable" @md-clear="onClear">
-    <md-date-icon class="md-date-icon" @click.native="toggleDialog(true)" />
-    <md-input :type="type" ref="input" v-model="inputDate" @focus.native="onFocus" @focusout.native="onFocusOut" :pattern="pattern" />
+  <md-field
+    :class="['md-datepicker', { 'md-native': !mdOverrideNative }]"
+    :md-clearable="mdClearable"
+    @md-clear="onClear"
+  >
+    <md-date-icon
+      class="md-date-icon"
+      @click="toggleDialog(true)"
+    />
+    <md-input
+      ref="input"
+      v-model="inputDate"
+      :type="type"
+      :pattern="pattern"
+      @focus="onFocus"
+      @focusout="onFocusOut"
+    />
 
     <slot />
 
@@ -9,15 +23,20 @@
       <md-datepicker-dialog
         v-if="showDialog"
         ref="mdRef"
-        :md-date.sync="localDate"
+        v-model:md-date="localDate"
         :md-disabled-dates="mdDisabledDates"
-        :mdImmediately="mdImmediately"
-        @md-closed="toggleDialog(false)"
+        :md-immediately="mdImmediately"
         :md-placement="mdPlacement"
+        @md-closed="toggleDialog(false)"
       />
     </keep-alive>
 
-    <md-overlay class="md-datepicker-overlay" md-fixed :md-active="showDialog" @click="toggleDialog(false)" />
+    <md-overlay
+      class="md-datepicker-overlay"
+      md-fixed
+      :md-active="showDialog"
+      @click="toggleDialog(false)"
+    />
   </md-field>
 </template>
 
@@ -81,6 +100,7 @@
         default: 'bottom-start'
       }
     },
+    emits: ['input','md-opened','md-closed','md-clear'],
     data: () => ({
       showDialog: false,
       // String for input
@@ -190,6 +210,9 @@
         }
       }
     },
+    created () {
+      this.inputDateToLocalDate = MdDebounce(this.inputDateToLocalDate, this.MdDebounce)
+    },
     methods: {
       toggleDialog (newState = null) {
         if (!isFirefox || this.mdOverrideNative) {
@@ -245,9 +268,6 @@
       onClear () {
         this.$emit('md-clear')
       }
-    },
-    created () {
-      this.inputDateToLocalDate = MdDebounce(this.inputDateToLocalDate, this.MdDebounce)
     }
   }
 </script>

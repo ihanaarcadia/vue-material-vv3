@@ -1,5 +1,9 @@
 <template>
-  <ul class="md-list" :class="[$mdActiveTheme]" v-bind="$attrs" v-on="$listeners">
+  <ul
+    class="md-list"
+    :class="[$mdActiveTheme]"
+    v-bind="$attrs"
+  >
     <slot />
   </ul>
 </template>
@@ -19,6 +23,11 @@
         }
       }
     },
+    
+    
+    
+    
+    
     provide () {
       return {
         MdList: this.MdList

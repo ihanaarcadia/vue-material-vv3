@@ -1,8 +1,14 @@
 <template>
-  <transition name="code-loading" appear>
+  <transition
+    name="code-loading"
+    appear
+  >
     <div class="code-loading">
       <md-progress-spinner md-mode="indeterminate" />
-      <div class="code-loading-label" v-if="$slots.default">
+      <div
+        v-if="$slots.default"
+        class="code-loading-label"
+      >
         <slot />
       </div>
     </div>

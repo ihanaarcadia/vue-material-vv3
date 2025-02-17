@@ -1,18 +1,28 @@
 <template>
   <md-button
+    :id="id"
     class="md-bottom-bar-item"
     :class="itemClasses"
-    :id="id"
     :disabled="mdDisabled"
     :md-ripple="MdBottomBar.type === 'fixed'"
     v-bind="attrs"
-    v-on="$listeners"
-    @click="setActiveItem">
-    <slot v-if="$slots.default"></slot>
+    
+    @click="setActiveItem"
+  >
+    <slot v-if="$slots.default" />
 
     <template v-else>
-      <md-icon class="md-bottom-bar-icon" v-if="isAssetIcon(mdIcon)" :md-src="mdIcon"></md-icon>
-      <md-icon class="md-bottom-bar-icon" v-else>{{ mdIcon }}</md-icon>
+      <md-icon
+        v-if="isAssetIcon(mdIcon)"
+        class="md-bottom-bar-icon"
+        :md-src="mdIcon"
+      />
+      <md-icon
+        v-else
+        class="md-bottom-bar-icon"
+      >
+        {{ mdIcon }}
+      </md-icon>
       <span class="md-bottom-bar-label">{{ mdLabel }}</span>
     </template>
   </md-button>
@@ -29,29 +39,15 @@
   export default {
     name: 'MdBottomBarItem',
     mixins: [MdAssetIcon, MdRouterLink],
+    inject: ['MdBottomBar'],
     props: {
       id: {
         type: String,
         default: () => 'md-bottom-bar-item-' + MdUuid()
       },
-      mdLabel: String,
-      mdIcon: String,
+      mdLabel: {type: String,default: () => ""},
+      mdIcon: {type: String, default: () => ""},
       mdDisabled: Boolean
-    },
-    inject: ['MdBottomBar'],
-    watch: {
-      $props: {
-        deep: true,
-        handler () {
-          this.setItemData()
-        }
-      },
-      $attrs: {
-        deep: true,
-        handler () {
-          this.setItemData()
-        }
-      }
     },
     computed: {
       itemClasses () {
@@ -71,6 +67,32 @@
 
         return attrs
       }
+    },
+    watch: {
+      $props: {
+        deep: true,
+        handler () {
+          this.setItemData()
+        }
+      },
+      $attrs: {
+        deep: true,
+        handler () {
+          this.setItemData()
+        }
+      }
+    },
+    beforeCreate () {
+      if (this.$router && this.$options.propsData.to) {
+        const componentProps = MdRouterLinkProps(this, this.$options.props)
+        this.$options.props = componentProps
+      }
+    },
+    created () {
+      this.setItemData()
+    },
+    beforeUnmount () {
+      this.$delete(this.MdBottomBar.items, this.id)
     },
     methods: {
       getPropValues () {
@@ -109,18 +131,6 @@
           this.MdBottomBar.mouseEvent = $event
         }
       }
-    },
-    beforeCreate () {
-      if (this.$router && this.$options.propsData.to) {
-        const componentProps = MdRouterLinkProps(this, this.$options.props)
-        this.$options.props = componentProps
-      }
-    },
-    created () {
-      this.setItemData()
-    },
-    beforeDestroy () {
-      this.$delete(this.MdBottomBar.items, this.id)
     }
   }
 </script>

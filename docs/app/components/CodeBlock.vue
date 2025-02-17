@@ -1,12 +1,29 @@
 <template>
-  <div class="code-block" :data-label="label">
-    <div class="code-block-wrapper md-scrollbar md-theme-dark" :style="{ 'max-height': height }">
-      <pre><code ref="block" :class="lang"><slot v-pre /></code></pre>
+  <div
+    class="code-block"
+    :data-label="label"
+  >
+    <div
+      class="code-block-wrapper md-scrollbar md-theme-dark"
+      :style="{ 'max-height': height }"
+    >
+      <pre><code
+ref="block"
+                 :class="lang"
+><slot v-pre /></code></pre>
 
-      <span class="copy-message" :class="{ 'active': showMessage }">{{ $t('components.code.copyMessage') }}</span>
+      <span
+        class="copy-message"
+        :class="{ 'active': showMessage }"
+      >{{ $t('components.code.copyMessage') }}</span>
     </div>
 
-    <md-button class="md-raised md-accent md-dense" ref="copy">{{ $t('components.code.copy') }}</md-button>
+    <md-button
+      ref="copy"
+      class="md-raised md-accent md-dense"
+    >
+      {{ $t('components.code.copy') }}
+    </md-button>
   </div>
 </template>
 
@@ -29,7 +46,7 @@
     mixins: [codeSource],
     props: {
       lang: String,
-      label: String,
+      label: {type: String,default: () => ""}
       height: {
         type: [Number, String],
         default: '450px'
@@ -38,6 +55,14 @@
     data: () => ({
       showMessage: false
     }),
+    mounted () {
+      this.$nextTick().then(() => {
+        this.reindentSource()
+        this.enableCopy()
+
+        highlight.highlightBlock(this.$refs.block)
+      })
+    },
     methods: {
       reindentSource: codeSource.reindentSource,
       enableCopy () {
@@ -58,14 +83,6 @@
           })
         }
       }
-    },
-    mounted () {
-      this.$nextTick().then(() => {
-        this.reindentSource()
-        this.enableCopy()
-
-        highlight.highlightBlock(this.$refs.block)
-      })
     }
   }
 </script>

@@ -1,5 +1,7 @@
 <template>
-  <div class="md-menu" v-on="$listeners">
+  <div
+    class="md-menu"
+  >
     <slot />
   </div>
 </template>
@@ -9,6 +11,15 @@
 
   export default {
     name: 'MdMenu',
+    
+    
+    
+    
+    provide () {
+      return {
+        MdMenu: this.MdMenu
+      }
+    },
     props: {
       mdActive: Boolean,
       mdAlignTrigger: Boolean,
@@ -46,6 +57,7 @@
         ])
       }
     },
+    emits: ['update:mdActive','md-closed','md-opened'],
     data () {
       return {
         triggerEl: null,
@@ -67,11 +79,7 @@
         }
       }
     },
-    provide () {
-      return {
-        MdMenu: this.MdMenu
-      }
-    },
+    
     computed: {
       isActive () {
         return this.MdMenu.active
@@ -115,11 +123,6 @@
         this.MdMenu.closeOnClick  = this.mdCloseOnClick
       }
     },
-    methods: {
-      toggleContent ($event) {
-        this.MdMenu.active = !this.MdMenu.active
-      }
-    },
     mounted () {
       this.MdMenu.$el = this.$el
 
@@ -131,9 +134,14 @@
         }
       })
     },
-    beforeDestroy () {
+    beforeUnmount () {
       if (this.triggerEl) {
         this.triggerEl.removeEventListener('click', this.toggleContent)
+      }
+    },
+    methods: {
+      toggleContent ($event) {
+        this.MdMenu.active = !this.MdMenu.active
       }
     }
   }

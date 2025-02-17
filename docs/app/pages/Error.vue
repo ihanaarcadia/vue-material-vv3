@@ -1,7 +1,5 @@
 <template>
-  <page-container :title="$t('pages.error.title')">
-
-  </page-container>
+  <page-container :title="$t('pages.error.title')" />
 </template>
 
 <style lang="scss">

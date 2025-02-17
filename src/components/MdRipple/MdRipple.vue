@@ -3,10 +3,17 @@
     :class="['md-ripple', rippleClasses]"
     @touchstart.passive="event => mdEventTrigger && touchStartCheck(event)"
     @touchmove.passive="event => mdEventTrigger && touchMoveCheck(event)"
-    @mousedown.passive="event => mdEventTrigger && startRipple(event)">
+    @mousedown.passive="event => mdEventTrigger && startRipple(event)"
+  >
     <slot />
     <div v-if="!isDisabled">
-      <md-wave v-for="ripple in ripples" :key="ripple.uuid" :class="['md-ripple-wave', waveClasses]" :style="ripple.waveStyles" @md-end="clearWave(ripple.uuid)" />
+      <md-wave
+        v-for="ripple in ripples"
+        :key="ripple.uuid"
+        :class="['md-ripple-wave', waveClasses]"
+        :style="ripple.waveStyles"
+        @md-end="clearWave(ripple.uuid)"
+      />
     </div>
   </div>
 </template>
@@ -67,6 +74,7 @@
         this.$emit('update:mdActive', false)
       }
     },
+    emits: ['update:mdActive'],
     methods: {
       touchMoveCheck () {
         window.clearTimeout(this.touchTimeout)

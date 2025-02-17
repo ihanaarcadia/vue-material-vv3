@@ -1,5 +1,8 @@
 <template>
-  <md-empty-state v-bind="$props" class="md-table-empty-state">
+  <md-empty-state
+    v-bind="$props"
+    class="md-table-empty-state"
+  >
     <slot />
   </md-empty-state>
 </template>
@@ -10,8 +13,8 @@
 
   export default {
     name: 'MdTableEmptyState',
-    props: MdEmptyStateProps,
-    inject: ['MdTable']
+    
+    props: MdEmptyStateProps
   }
 </script>
 

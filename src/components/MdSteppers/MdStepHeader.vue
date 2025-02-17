@@ -1,17 +1,44 @@
 <template>
-  <md-button class="md-stepper-header" :class="classes" :disabled="shouldDisable" v-bind="data.props" v-on="data.events" @click.native="!MdSteppers.syncRoute && MdSteppers.setActiveStep(index)">
-    <md-warning-icon class="md-stepper-icon" v-if="data.error" />
+  <md-button
+    class="md-stepper-header"
+    :class="classes"
+    :disabled="shouldDisable"
+    v-bind="data.props"
+    v-on="data.events"
+    @click="!MdSteppers.syncRoute && MdSteppers.setActiveStep(index)"
+  >
+    <md-warning-icon
+      v-if="data.error"
+      class="md-stepper-icon"
+    />
 
-    <div class="md-stepper-number" v-else>
-      <md-edit-icon class="md-stepper-editable" v-if="data.done && data.editable" />
-      <md-check-icon class="md-stepper-done" v-else-if="data.done" />
-      <template v-else>{{ MdSteppers.getStepperNumber(index) }}</template>
+    <div
+      v-else
+      class="md-stepper-number"
+    >
+      <md-edit-icon
+        v-if="data.done && data.editable"
+        class="md-stepper-editable"
+      />
+      <md-check-icon
+        v-else-if="data.done"
+        class="md-stepper-done"
+      />
+      <template v-else>
+        {{ MdSteppers.getStepperNumber(index) }}
+      </template>
     </div>
 
     <div class="md-stepper-text">
       <span class="md-stepper-label">{{ data.label }}</span>
-      <span class="md-stepper-error" v-if="data.error">{{ data.error }}</span>
-      <span class="md-stepper-description" v-else-if="data.description">{{ data.description }}</span>
+      <span
+        v-if="data.error"
+        class="md-stepper-error"
+      >{{ data.error }}</span>
+      <span
+        v-else-if="data.description"
+        class="md-stepper-description"
+      >{{ data.description }}</span>
     </div>
   </md-button>
 </template>
@@ -28,13 +55,13 @@
       MdCheckIcon,
       MdEditIcon
     },
+    inject: ['MdSteppers'],
     props: {
       index: {
         type: String,
         required: true
       }
     },
-    inject: ['MdSteppers'],
     computed: {
       data () {
         return this.MdSteppers.items[this.index]

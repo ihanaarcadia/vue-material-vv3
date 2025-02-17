@@ -69,7 +69,7 @@
     },
     render (createElement) {
       try {
-        const defaultSlot = this.$slots.default
+        const defaultSlot = this.$slots.default()
 
         if (!defaultSlot) {
           return null

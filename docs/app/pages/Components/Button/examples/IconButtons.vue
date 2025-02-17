@@ -14,7 +14,10 @@
         <md-icon>thumb_up</md-icon>
       </md-button>
 
-      <md-button class="md-icon-button" disabled>
+      <md-button
+        class="md-icon-button"
+        disabled
+      >
         <md-icon>add</md-icon>
       </md-button>
     </div>
@@ -33,7 +36,10 @@
         <md-icon>thumb_up</md-icon>
       </md-button>
 
-      <md-button class="md-icon-button md-raised" disabled>
+      <md-button
+        class="md-icon-button md-raised"
+        disabled
+      >
         <md-icon>add</md-icon>
       </md-button>
     </div>

@@ -1,5 +1,8 @@
 <template>
-  <md-field class="md-chips" :class="[$mdActiveTheme, chipsClasses]">
+  <md-field
+    class="md-chips"
+    :class="[$mdActiveTheme, chipsClasses]"
+  >
     <slot />
 
     <md-chip
@@ -9,24 +12,33 @@
       :md-clickable="!mdStatic"
       :md-duplicated="duplicatedChip === chip"
       @keydown.enter="$emit('md-click', chip, key)"
-      @click.native="$emit('md-click', chip, key)"
-      @md-delete.stop="removeChip(chip)">
-      <slot name="md-chip" :chip="chip" v-if="$scopedSlots['md-chip']">{{ chip }}</slot>
-      <template v-else>{{ chip }}</template>
+      @click="$emit('md-click', chip, key)"
+      @md-delete.stop="removeChip(chip)"
+    >
+      <slot
+        v-if="$slots['md-chip']"
+        name="md-chip"
+        :chip="chip"
+      >
+        {{ chip }}
+      </slot>
+      <template v-else>
+        {{ chip }}
+      </template>
     </md-chip>
 
     <md-input
+      v-if="!mdStatic && modelRespectLimit"
+      :id="id"
       ref="input"
       v-model.trim="inputValue"
-      v-if="!mdStatic && modelRespectLimit"
       :type="mdInputType"
-      :id="id"
       :placeholder="mdPlaceholder"
       @input="handleInput"
       @keydown.enter="insertChip"
       @keydown.8="handleBackRemove"
-      @focusout="handleFocusOut">
-    </md-input>
+      @focusout="handleFocusOut"
+    />
   </md-field>
 </template>
 
@@ -90,6 +102,7 @@
         return this.mdFormat(this.inputValue)
       }
     },
+    emits: ['md-click','input','md-insert','md-delete'],
     methods: {
       insertChip ({ target }) {
         let inputValue = this.formattedInputValue

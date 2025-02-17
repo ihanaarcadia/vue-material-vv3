@@ -1,5 +1,8 @@
 <template>
-  <div class="note-block" :class="[{ alert, tip, warning }, $mdActiveTheme]">
+  <div
+    class="note-block"
+    :class="[{ alert, tip, warning }, $mdActiveTheme]"
+  >
     <slot />
   </div>
 </template>

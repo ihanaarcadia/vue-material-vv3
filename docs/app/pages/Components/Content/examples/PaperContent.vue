@@ -1,8 +1,12 @@
 <template>
   <div>
     <md-content>Background</md-content>
-    <md-content class="md-primary">Primary</md-content>
-    <md-content class="md-accent">Accent</md-content>
+    <md-content class="md-primary">
+      Primary
+    </md-content>
+    <md-content class="md-accent">
+      Accent
+    </md-content>
   </div>
 </template>
 

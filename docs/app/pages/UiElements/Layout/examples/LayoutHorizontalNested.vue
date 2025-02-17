@@ -2,21 +2,21 @@
   <div>
     <div class="md-layout md-gutter">
       <div class="md-layout-item md-layout md-gutter">
-        <div class="md-layout-item"></div>
-        <div class="md-layout-item"></div>
-        <div class="md-layout-item"></div>
+        <div class="md-layout-item" />
+        <div class="md-layout-item" />
+        <div class="md-layout-item" />
       </div>
 
       <div class="md-layout-item md-layout md-gutter">
-        <div class="md-layout-item"></div>
-        <div class="md-layout-item"></div>
+        <div class="md-layout-item" />
+        <div class="md-layout-item" />
       </div>
 
       <div class="md-layout-item md-layout md-gutter">
-        <div class="md-layout-item"></div>
-        <div class="md-layout-item"></div>
-        <div class="md-layout-item"></div>
-        <div class="md-layout-item"></div>
+        <div class="md-layout-item" />
+        <div class="md-layout-item" />
+        <div class="md-layout-item" />
+        <div class="md-layout-item" />
       </div>
     </div>
   </div>

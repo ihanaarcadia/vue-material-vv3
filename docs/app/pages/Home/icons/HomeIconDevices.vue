@@ -1,8 +1,8 @@
 <template>
   <home-icon class="home-icon-devices">
-    <div class="device"></div>
-    <div class="device"></div>
-    <div class="device"></div>
+    <div class="device" />
+    <div class="device" />
+    <div class="device" />
   </home-icon>
 </template>
 

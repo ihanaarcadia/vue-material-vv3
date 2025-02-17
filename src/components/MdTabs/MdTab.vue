@@ -7,21 +7,21 @@
   export default {
     name: 'MdTab',
     mixins: [MdRouterLink],
+    inject: ['MdTabs'],
     props: {
       id: {
         type: [String, Number],
         default: () => 'md-tab-' + MdUuid()
       },
-      href: [String, Number],
+      href: {type: [String, Number],default: () => ""},
       mdDisabled: Boolean,
-      mdLabel: [String, Number],
-      mdIcon: String,
+      mdLabel: {type: [String, Number],default: () => ""},
+      mdIcon: {type: String, default: () => ""},
       mdTemplateData: {
         type: Object,
         default: () => ({})
       }
     },
-    inject: ['MdTabs'],
     data: () => ({
       observer: null
     }),
@@ -39,9 +39,21 @@
         }
       }
     },
+    mounted () {
+      this.setupObserver()
+      this.setTabData()
+    },
+    beforeUnmount () {
+      if (this.observer) {
+        this.observer.disconnect()
+      }
+
+      this.MdTabs.items.delete(this.id)
+      this.MdTabs.items = new Map(this.MdTabs.items) // new Map() because Map is not reactive in VueJs 2
+    },
     methods: {
       setTabContent () {
-        this.$set(this.MdTabs.items.get(this.id), 'hasContent', !!this.$slots.default)
+        this.$set(this.MdTabs.items.get(this.id), 'hasContent', !!this.$slots.default())
       },
       setupObserver () {
         this.observer = MdObserveElement(this.$el, {
@@ -55,13 +67,13 @@
         // new Map() because Map is not reactive in VueJs 2
         this.MdTabs.items = new Map(this.MdTabs.items.set(this.id, {
           id: this.id,
-          hasContent: !!this.$slots.default,
+          hasContent: !!this.$slots.default(),
           label: this.mdLabel,
           icon: this.mdIcon,
           disabled: this.mdDisabled,
           data: this.mdTemplateData,
           props: this.getPropValues(),
-          events: this.$listeners
+          
         }))
       },
       getPropValues () {
@@ -86,18 +98,6 @@
         return values
       }
     },
-    mounted () {
-      this.setupObserver()
-      this.setTabData()
-    },
-    beforeDestroy () {
-      if (this.observer) {
-        this.observer.disconnect()
-      }
-
-      this.MdTabs.items.delete(this.id)
-      this.MdTabs.items = new Map(this.MdTabs.items) // new Map() because Map is not reactive in VueJs 2
-    },
     render (createElement) {
       let tabAttrs = {
         staticClass: 'md-tab',
@@ -105,7 +105,7 @@
           ...this.$attrs,
           id: this.id
         },
-        on: this.$listeners
+        
       }
 
       if (this.$router && this.to) {
@@ -114,7 +114,7 @@
         tabAttrs.props = this.$props
       }
 
-      return createElement('div', tabAttrs, this.$slots.default)
+      return createElement('div', tabAttrs, this.$slots.default())
     }
   }
 </script>

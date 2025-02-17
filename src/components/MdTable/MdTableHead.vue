@@ -1,18 +1,38 @@
 <template>
-  <th class="md-table-head" :id="id" :class="headClasses" :style="headStyles" @click="changeSort">
-    <div class="md-table-head-container" v-if="$slots.default">
+  <th
+    :id="id"
+    class="md-table-head"
+    :class="headClasses"
+    :style="headStyles"
+    @click="changeSort"
+  >
+    <div
+      v-if="$slots.default"
+      class="md-table-head-container"
+    >
       <div class="md-table-head-label">
         <slot />
       </div>
     </div>
 
-    <md-ripple class="md-table-head-container" :md-disabled="!hasSort" v-else>
+    <md-ripple
+      v-else
+      class="md-table-head-container"
+      :md-disabled="!hasSort"
+    >
       <div class="md-table-head-label">
-        <md-upward-icon class="md-table-sortable-icon" v-if="hasSort">arrow_upward</md-upward-icon>
+        <md-upward-icon
+          v-if="hasSort"
+          class="md-table-sortable-icon"
+        >
+          arrow_upward
+        </md-upward-icon>
 
         {{ label }}
 
-        <md-tooltip v-if="tooltip">{{ tooltip }}</md-tooltip>
+        <md-tooltip v-if="tooltip">
+          {{ tooltip }}
+        </md-tooltip>
       </div>
     </md-ripple>
   </th>
@@ -27,15 +47,16 @@
     components: {
       MdUpwardIcon
     },
+    
+    inject: ['MdTable'],//
     props: {
       mdNumeric: Boolean,
       numeric: Boolean,
-      id: [String, Number],
-      label: String,
-      tooltip: String,
-      sortBy: String
+      id: {type: [String, Number],default: () => ""},
+      label: {type: String,default: () => ""},
+      tooltip: {type: String,default: () => ""},
+      sortBy: {type: String,default: () => ""}
     },
-    inject: ['MdTable'],
     data: () => ({
       width: null,
       windowResizeObserver: null
@@ -70,6 +91,21 @@
         }
       }
     },
+    updated () {
+      this.$nextTick().then(this.setWidth)
+    },
+    mounted () {
+      this.$nextTick().then(this.setWidth)
+
+      if (this.MdTable.fixedHeader) {
+        this.windowResizeObserver = new MdResizeObserver(window, this.setWidth)
+      }
+    },
+    beforeUnmount () {
+      if (this.windowResizeObserver) {
+        this.windowResizeObserver.destroy()
+      }
+    },
     methods: {
       changeSort () {
         if (this.hasSort) {
@@ -101,21 +137,6 @@
 
           this.width = tdEls[nodeIndex].offsetWidth
         }
-      }
-    },
-    updated () {
-      this.$nextTick().then(this.setWidth)
-    },
-    mounted () {
-      this.$nextTick().then(this.setWidth)
-
-      if (this.MdTable.fixedHeader) {
-        this.windowResizeObserver = new MdResizeObserver(window, this.setWidth)
-      }
-    },
-    beforeDestroy () {
-      if (this.windowResizeObserver) {
-        this.windowResizeObserver.destroy()
       }
     }
   }

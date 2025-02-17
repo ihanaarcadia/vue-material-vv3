@@ -1,7 +1,14 @@
 <template>
-  <td class="md-table-cell md-table-cell-selection" v-if="mdSelectable">
+  <td
+    v-if="mdSelectable"
+    class="md-table-cell md-table-cell-selection"
+  >
     <div class="md-table-cell-container">
-      <md-checkbox v-model="isSelected" :disabled="!mdSelectable || mdDisabled" @change="onChange" />
+      <md-checkbox
+        v-model="isSelected"
+        :disabled="!mdSelectable || mdDisabled"
+        @change="onChange"
+      />
     </div>
   </td>
 </template>
@@ -9,13 +16,15 @@
 <script>
   export default {
     name: 'MdTableCellSelection',
+    
+    inject: ['MdTable'],//
     props: {
       value: Boolean,
-      mdRowId: [Number, String],
+      mdRowId: {type: [Number, String],default: () => 0},
       mdSelectable: Boolean,
       mdDisabled: Boolean
     },
-    inject: ['MdTable'],
+    emits: ['input'],
     data: () => ({
       isSelected: false
     }),

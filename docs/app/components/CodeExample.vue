@@ -1,27 +1,56 @@
 <template>
   <div class="code-example">
-    <md-toolbar class="md-primary md-dense" md-theme="dark" md-elevation="0" v-if="title">
+    <md-toolbar
+      v-if="title"
+      class="md-primary md-dense"
+      md-theme="dark"
+      md-elevation="0"
+    >
       <span class="md-title">{{ title }}</span>
-      <md-button class="md-icon-button md-dense" @click="toggleCode" v-if="component.name">
+      <md-button
+        v-if="component.name"
+        class="md-icon-button md-dense"
+        @click="toggleCode"
+      >
         <md-icon>code</md-icon>
-        <md-tooltip md-theme="default">Code</md-tooltip>
+        <md-tooltip md-theme="default">
+          Code
+        </md-tooltip>
       </md-button>
-      <codesandbox-edit :component="component" :title="title" v-if="component.name" />
+      <codesandbox-edit
+        v-if="component.name"
+        :component="component"
+        :title="title"
+      />
     </md-toolbar>
 
     <transition name="block">
-      <code-block :label="label" :lang="lang" v-if="!component.name || $slots.default || showCode">
+      <code-block
+        v-if="!component.name || $slots.default || showCode"
+        :label="label"
+        :lang="lang"
+      >
         <slot>{{ component.source }}</slot>
       </code-block>
 
-      <md-content class="demo" :md-theme="theme" v-else>
+      <md-content
+        v-else
+        class="demo"
+        :md-theme="theme"
+      >
         <div class="demo-content">
           <component :is="component.name" />
         </div>
 
-        <md-button class="button-theme md-icon-button md-dense md-raised md-accent" @click="toggleTheme" v-if="component.name">
+        <md-button
+          v-if="component.name"
+          class="button-theme md-icon-button md-dense md-raised md-accent"
+          @click="toggleTheme"
+        >
           <md-icon>invert_colors</md-icon>
-          <md-tooltip md-direction="top">Invert Colors</md-tooltip>
+          <md-tooltip md-direction="top">
+            Invert Colors
+          </md-tooltip>
         </md-button>
       </md-content>
     </transition>

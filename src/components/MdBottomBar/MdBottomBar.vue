@@ -1,6 +1,12 @@
 <template>
-  <div class="md-bottom-bar" :class="[$mdActiveTheme, barClasses]">
-    <md-ripple :md-disabled="mdType === 'fixed'" :md-active="MdBottomBar.mouseEvent">
+  <div
+    class="md-bottom-bar"
+    :class="[$mdActiveTheme, barClasses]"
+  >
+    <md-ripple
+      :md-disabled="mdType === 'fixed'"
+      :md-active="MdBottomBar.mouseEvent"
+    >
       <slot />
     </md-ripple>
   </div>
@@ -15,6 +21,15 @@
     name: 'MdBottomBar',
     components: {
       MdRipple
+    },
+    
+    
+    
+    
+    provide () {
+      return {
+        MdBottomBar: this.MdBottomBar
+      }
     },
     props: {
       mdSyncRoute: Boolean,
@@ -35,11 +50,7 @@
         }
       }
     },
-    provide () {
-      return {
-        MdBottomBar: this.MdBottomBar
-      }
-    },
+    
     computed: {
       activeItem () {
         return this.MdBottomBar.activeItem
@@ -58,6 +69,7 @@
         this.MdBottomBar.syncRoute = mdSyncRoute
       }
     },
+    emits: ['md-changed'],
     methods: {
       hasActiveItem () {
         return this.MdBottomBar.activeItem || this.mdActiveItem

@@ -1,14 +1,32 @@
 <template>
-  <transition name="md-chip" appear>
-    <div class="md-chip" :class="[$mdActiveTheme, chipClasses]" tabindex="0" v-on="$listeners">
-      <md-ripple :md-disabled="mdDisabled" v-if="mdClickable || !mdRipple">
+  <transition
+    name="md-chip"
+    appear
+  >
+    <div
+      class="md-chip"
+      :class="[$mdActiveTheme, chipClasses]"
+      tabindex="0"
+    >
+      <md-ripple
+        v-if="mdClickable || !mdRipple"
+        :md-disabled="mdDisabled"
+      >
         <slot />
       </md-ripple>
 
       <slot v-else />
 
-      <transition name="md-input-action" appear>
-        <md-button tabindex="-1" class="md-icon-button md-dense md-input-action md-clear" v-if="mdDeletable" @click="$emit('md-delete', $event)">
+      <transition
+        name="md-input-action"
+        appear
+      >
+        <md-button
+          v-if="mdDeletable"
+          tabindex="-1"
+          class="md-icon-button md-dense md-input-action md-clear"
+          @click="$emit('md-delete', $event)"
+        >
           <md-clear-icon />
         </md-button>
       </transition>

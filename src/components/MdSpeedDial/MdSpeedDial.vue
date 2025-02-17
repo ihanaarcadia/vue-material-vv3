@@ -1,5 +1,8 @@
 <template>
-  <div class="md-speed-dial" :class="[$mdActiveTheme, speedDialClasses]">
+  <div
+    class="md-speed-dial"
+    :class="[$mdActiveTheme, speedDialClasses]"
+  >
     <slot />
   </div>
 </template>
@@ -10,6 +13,15 @@
 
   export default new MdComponent({
     name: 'MdSpeedDial',
+    
+    
+    
+    
+    provide () {
+      return {
+        MdSpeedDial: this.MdSpeedDial
+      }
+    },
     props: {
       mdEvent: {
         type: String,
@@ -36,11 +48,7 @@
         }
       }
     },
-    provide () {
-      return {
-        MdSpeedDial: this.MdSpeedDial
-      }
-    },
+    
     computed: {
       speedDialClasses () {
         return {

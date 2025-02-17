@@ -1,14 +1,27 @@
 <template>
-  <md-dialog-render :md-value="mdActive" :md-keep-alive="mdKeepAlive">
+  <md-dialog-render
+    :md-value="mdActive"
+    :md-keep-alive="mdKeepAlive"
+  >
     <md-portal>
       <transition name="md-dialog">
         <div class="md-dialog">
           <md-focus-trap>
-            <div class="md-dialog-container" :class="[dialogContainerClasses, $mdActiveTheme]" v-on="$listeners"
-                @keydown.esc="onEsc">
+            <div
+              class="md-dialog-container"
+              :class="[dialogContainerClasses, $mdActiveTheme]"
+              
+              @keydown.esc="onEsc"
+            >
               <slot />
               <keep-alive>
-                <md-overlay :class="mdBackdropClass" md-fixed :md-active="mdActive" @click="onClick" v-if="mdBackdrop" />
+                <md-overlay
+                  v-if="mdBackdrop"
+                  :class="mdBackdropClass"
+                  md-fixed
+                  :md-active="mdActive"
+                  @click="onClick"
+                />
               </keep-alive>
             </div>
           </md-focus-trap>
@@ -84,6 +97,7 @@
         })
       }
     },
+    emits: ['md-opened','md-closed','update:mdActive','md-clicked-outside'],
     methods: {
       closeDialog () {
         this.$emit('update:mdActive', false)

@@ -4,19 +4,37 @@
       <span class="md-table-pagination-label">{{ mdLabel }}</span>
 
       <md-field>
-        <md-select v-model="currentPageSize" md-dense md-class="md-pagination-select">
-          <md-option v-for="amount in mdPageOptions" :key="amount" :value="amount">{{ amount }}</md-option>
+        <md-select
+          v-model="currentPageSize"
+          md-dense
+          md-class="md-pagination-select"
+        >
+          <md-option
+            v-for="amount in mdPageOptions"
+            :key="amount"
+            :value="amount"
+          >
+            {{ amount }}
+          </md-option>
         </md-select>
       </md-field>
     </template>
 
     <span>{{ (mdPage - 1) * currentPageSize + 1 }}–{{ Math.min(mdPage * currentPageSize, mdCount) }} {{ mdSeparator }} {{ mdCount }}</span>
 
-    <md-button class="md-icon-button md-table-pagination-previous" @click="changePage(-1)" :disabled="mdPage === 1">
+    <md-button
+      class="md-icon-button md-table-pagination-previous"
+      :disabled="mdPage === 1"
+      @click="changePage(-1)"
+    >
       <md-icon>keyboard_arrow_left</md-icon>
     </md-button>
 
-    <md-button class="md-icon-button md-table-pagination-next" @click="changePage(+1)" :disabled="mdPage === pageCount">
+    <md-button
+      class="md-icon-button md-table-pagination-next"
+      :disabled="mdPage === pageCount"
+      @click="changePage(+1)"
+    >
       <md-icon>keyboard_arrow_right</md-icon>
     </md-button>
   </div>
@@ -28,9 +46,10 @@
   }
   export default {
     name: 'MdTablePagination',
-    inject: ['MdTable'],
+    
+    inject: ['MdTable'],//
     props: {
-      mdData: {
+      mdData: {default: () =>[],
         type: [Array, Object]
       },
       mdPageOptions: {
@@ -58,6 +77,7 @@
         default: 'of'
       }
     },
+    emits: ['update:mdData','update:mdPaginatedData'],
     data: () => ({
       mdPage: 0,
       mdCount: 0,

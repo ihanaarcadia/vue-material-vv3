@@ -1,7 +1,10 @@
 <template>
-  <div class="icon-button" v-once>
-    <div class="square"></div>
-    <div class="circle"></div>
+  <div
+    v-once
+    class="icon-button"
+  >
+    <div class="square" />
+    <div class="circle" />
   </div>
 </template>
 

@@ -1,6 +1,12 @@
 <template>
-  <transition name="page-container" appear>
-    <div class="page-container main-container" :class="{ centered }">
+  <transition
+    name="page-container"
+    appear
+  >
+    <div
+      class="page-container main-container"
+      :class="{ centered }"
+    >
       <ad-manager />
 
       <slot />

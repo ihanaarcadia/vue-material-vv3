@@ -1,5 +1,11 @@
 <template>
-  <md-drawer class="md-app-drawer" :md-active="mdActive && initialized" v-bind="$attrs" v-on="$listeners" :md-right="mdRight" ref="drawer">
+  <md-drawer
+    v-bind="$attrs"
+    ref="drawer"
+    class="md-app-drawer"
+    :md-active="mdActive && initialized"
+    :md-right="mdRight"
+  >
     <slot />
   </md-drawer>
 </template>
@@ -8,14 +14,6 @@
   export default {
     name: 'MdAppDrawer',
     inject: ['MdApp'],
-    data: () => ({
-      drawerElement: {
-        mdActive: null,
-        mode: null,
-        submode: null
-      },
-      initialized: false
-    }),
     props: {
       mdRight: {
         type: Boolean,
@@ -26,6 +24,14 @@
         default: false
       }
     },
+    data: () => ({
+      drawerElement: {
+        mdActive: null,
+        mode: null,
+        submode: null
+      },
+      initialized: false
+    }),
     computed: {
       visible () {
         return this.drawerElement.mdActive
@@ -52,6 +58,20 @@
         this.MdApp.drawer.right = right
       }
     },
+    mounted () {
+      this.$nextTick().then(() => {
+        this.MdApp.drawer.initialWidth = this.$el.offsetWidth
+        this.drawerElement = this.$refs.drawer
+        this.updateDrawerData()
+        this.initialized = true
+      })
+    },
+    updated () {
+      this.drawerElement = this.$refs.drawer
+    },
+    beforeUnmount () {
+      this.clearDrawerData()
+    },
     methods: {
       getDrawerWidth () {
         if (this.$el) {
@@ -74,20 +94,6 @@
         this.MdApp.drawer.submode = null
         this.MdApp.drawer.initialWidth = 0
       },
-    },
-    mounted () {
-      this.$nextTick().then(() => {
-        this.MdApp.drawer.initialWidth = this.$el.offsetWidth
-        this.drawerElement = this.$refs.drawer
-        this.updateDrawerData()
-        this.initialized = true
-      })
-    },
-    updated () {
-      this.drawerElement = this.$refs.drawer
-    },
-    beforeDestroy () {
-      this.clearDrawerData()
     }
   }
 </script>

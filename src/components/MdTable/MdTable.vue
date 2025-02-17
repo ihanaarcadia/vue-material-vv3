@@ -1,26 +1,49 @@
 <template>
-  <md-tag-switcher :md-tag="contentTag" class="md-table">
+  <md-tag-switcher
+    :md-tag="contentTag"
+    class="md-table"
+  >
     <slot name="md-table-toolbar" />
 
     <keep-alive>
-      <md-table-alternate-header v-if="$scopedSlots['md-table-alternate-header'] && selectedCount">
-        <slot name="md-table-alternate-header" :count="selectedCount" />
+      <md-table-alternate-header v-if="$slots['md-table-alternate-header'] && selectedCount">
+        <slot
+          name="md-table-alternate-header"
+          :count="selectedCount"
+        />
       </md-table-alternate-header>
     </keep-alive>
 
-    <div class="md-table-fixed-header" :class="headerClasses" :style="headerStyles" v-if="mdFixedHeader">
-      <div class="md-table-fixed-header-container" ref="fixedHeaderContainer" @scroll="setHeaderScroll">
+    <div
+      v-if="mdFixedHeader"
+      class="md-table-fixed-header"
+      :class="headerClasses"
+      :style="headerStyles"
+    >
+      <div
+        ref="fixedHeaderContainer"
+        class="md-table-fixed-header-container"
+        @scroll="setHeaderScroll"
+      >
         <table :style="fixedHeaderTableStyles">
           <md-table-thead />
         </table>
       </div>
     </div>
 
-    <md-content class="md-table-content md-scrollbar" :class="contentClasses" :style="contentStyles" @scroll="setScroll">
+    <md-content
+      class="md-table-content md-scrollbar"
+      :class="contentClasses"
+      :style="contentStyles"
+      @scroll="setScroll"
+    >
       <table ref="contentTable">
-        <md-table-thead :class="headerClasses" v-if="!mdFixedHeader && $scopedSlots['md-table-row']" />
+        <md-table-thead
+          v-if="!mdFixedHeader && $slots['md-table-row']"
+          :class="headerClasses"
+        />
 
-        <tbody v-if="!$scopedSlots['md-table-row']">
+        <tbody v-if="!$slots['md-table-row']">
           <slot />
         </tbody>
 
@@ -30,12 +53,17 @@
             :key="getRowId(item, mdModelId)"
             :md-id="getRowId(item, mdModelId)"
             :md-index="index"
-            :md-item="item">
-            <slot name="md-table-row" :item="item" :index="index" />
+            :md-item="item"
+          >
+            <slot
+              name="md-table-row"
+              :item="item"
+              :index="index"
+            />
           </md-table-row-ghost>
         </tbody>
 
-        <tbody v-else-if="$scopedSlots['md-table-empty-state']">
+        <tbody v-else-if="$slots['md-table-empty-state']">
           <tr>
             <td :colspan="headerCount">
               <slot name="md-table-empty-state" />
@@ -47,7 +75,7 @@
       <slot name="md-table-pagination" />
     </md-content>
 
-    <slot v-if="!hasValue && $scopedSlots['md-table-pagination']" />
+    <slot v-if="!hasValue && $slots['md-table-pagination']" />
   </md-tag-switcher>
 </template>
 
@@ -84,8 +112,17 @@
       MdTableRowGhost,
       MdTableCellSelection
     },
+    
+    
+    
+    
+    provide () {
+      const MdTable = this.MdTable
+
+      return { MdTable }
+    },
     props: {
-      value: [Array, Object],
+      value: {type: [Array, Object],default: () => []},
       mdModelId: {
         type: String,
         default: 'id'
@@ -96,7 +133,7 @@
         type: [Number, String],
         default: 400
       },
-      mdSort: String,
+      mdSort: {type: String,default: () => ""},
       mdSortOrder: {
         type: String,
         default: 'asc',
@@ -134,10 +171,11 @@
           return value.sort(comparator)
         }
       },
-      mdSelectedValue: {
+      mdSelectedValue: {default: () =>[],
         type: [Array, Object]
       }
     },
+    emits: ['input','update:mdSelectedValue','md-selected'],
     data () {
       return {
         windowResizeObserver: null,
@@ -217,11 +255,7 @@
         }
       }
     },
-    provide () {
-      const MdTable = this.MdTable
-
-      return { MdTable }
-    },
+    
     watch: {
       mdSort: {
         immediate: true,
@@ -277,6 +311,27 @@
       value () {
         this.syncSelectedValue()
         this.setWidth()
+      }
+    },
+    created () {
+      if (this.mdSort) {
+        this.sortTable()
+      }
+
+      this.syncSelectedValue()
+    },
+    mounted () {
+      this.setContentEl()
+      this.$nextTick().then(this.setWidth)
+
+      if (this.mdFixedHeader) {
+        this.setHeaderPadding()
+        this.windowResizeObserver = new MdResizeObserver(window, this.setWidth)
+      }
+    },
+    beforeUnmount () {
+      if (this.windowResizeObserver) {
+        this.windowResizeObserver.destroy()
       }
     },
     methods: {
@@ -365,27 +420,6 @@
         if (this.mdFixedHeader) {
           this.fixedHeaderTableWidth = this.$refs.contentTable.offsetWidth
         }
-      }
-    },
-    created () {
-      if (this.mdSort) {
-        this.sortTable()
-      }
-
-      this.syncSelectedValue()
-    },
-    mounted () {
-      this.setContentEl()
-      this.$nextTick().then(this.setWidth)
-
-      if (this.mdFixedHeader) {
-        this.setHeaderPadding()
-        this.windowResizeObserver = new MdResizeObserver(window, this.setWidth)
-      }
-    },
-    beforeDestroy () {
-      if (this.windowResizeObserver) {
-        this.windowResizeObserver.destroy()
       }
     }
   }

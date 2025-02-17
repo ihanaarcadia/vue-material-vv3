@@ -1,6 +1,12 @@
-<template functional>
-  <transition name="md-snackbar" appear>
-    <div class="md-snackbar" :class="props.mdClasses">
+<template>
+  <transition
+    name="md-snackbar"
+    appear
+  >
+    <div
+      class="md-snackbar"
+      :class="$props.mdClasses"
+    >
       <div class="md-snackbar-content">
         <slot />
       </div>
@@ -12,7 +18,7 @@
   export default {
     name: 'MdSnackbarContent',
     props: {
-      mdClasses: Array
+      mdClasses: {type: Array,default: () => []}
     }
   }
 </script>

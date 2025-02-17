@@ -1,30 +1,64 @@
 <template>
-  <div class="api-table" :class="$mdActiveTheme">
+  <div
+    class="api-table"
+    :class="$mdActiveTheme"
+  >
     <table>
       <tr>
-        <th v-for="heading in headings" :key="heading">{{ heading }}</th>
+        <th
+          v-for="heading in headings"
+          :key="heading"
+        >
+          {{ heading }}
+        </th>
       </tr>
 
-      <tr v-for="{ offset, name, type, options, usage, description, defaults, value, example } in props" :key="name">
-        <td class="prop" :class="{ offset }">
-          <span class="prop-name" v-html="name"></span>
-          <small class="prop-type" v-if="type">{{ type }}</small>
+      <tr
+        v-for="{ offset, name, type, options, usage, description, defaults, value, example } in props"
+        :key="name"
+      >
+        <td
+          class="prop"
+          :class="{ offset }"
+        >
+          <span
+            class="prop-name"
+            v-html="name"
+          />
+          <small
+            v-if="type"
+            class="prop-type"
+          >{{ type }}</small>
         </td>
 
-        <td class="description" v-if="description" v-html="description"></td>
-        <td class="slot-options" v-if="options">
-          <p class="option" v-for="({ name, description }, index) in options" :key="index">
+        <td
+          v-if="description"
+          class="description"
+          v-html="description"
+        />
+        <td
+          v-if="options"
+          class="slot-options"
+        >
+          <p
+            v-for="({ name, description }, index) in options"
+            :key="index"
+            class="option"
+          >
             <code>{{ name }}: </code>
-            <span v-html="description"></span>
+            <span v-html="description" />
           </p>
 
-          <div class="usage" v-if="usage">
+          <div
+            v-if="usage"
+            class="usage"
+          >
             <strong>Usage: </strong>
             <p><code>{{ usage }}</code></p>
           </div>
         </td>
         <td v-if="defaults || value || example">
-          <code v-html="defaults || value || example"></code>
+          <code v-html="defaults || value || example" />
         </td>
       </tr>
     </table>

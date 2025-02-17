@@ -1,13 +1,13 @@
 <template>
   <textarea
+    v-model="model"
     class="md-textarea"
     :style="textareaStyles"
-    v-model="model"
     v-bind="attributes"
     v-on="listeners"
     @focus="onFocus"
-    @blur="onBlur">
-  </textarea>
+    @blur="onBlur"
+  />
 </template>
 
 <script>
@@ -49,7 +49,7 @@
     computed: {
       listeners () {
         return {
-          ...this.$listeners,
+          
           input: this.onInput
         }
       },

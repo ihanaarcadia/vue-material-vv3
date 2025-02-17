@@ -1,12 +1,27 @@
 <template>
-  <md-popover :md-settings="popperSettings" :md-active="shouldRender">
-    <transition name="md-menu-content" :css="didMount" v-if="shouldRender" v-on="$listeners">
+  <md-popover
+    :md-settings="popperSettings"
+    :md-active="shouldRender"
+  >
+    <transition
+      v-if="shouldRender"
+      name="md-menu-content"
+      :css="didMount"
+    >
       <div
+        ref="menu"
         :class="[menuClasses, mdContentClass, $mdActiveTheme]"
         :style="menuStyles"
-        ref="menu">
-        <div class="md-menu-content-container md-scrollbar" :class="$mdActiveTheme" ref="container">
-          <md-list :class="listClasses" v-bind="filteredAttrs">
+      >
+        <div
+          ref="container"
+          class="md-menu-content-container md-scrollbar"
+          :class="$mdActiveTheme"
+        >
+          <md-list
+            :class="listClasses"
+            v-bind="filteredAttrs"
+          >
             <slot />
           </md-list>
         </div>

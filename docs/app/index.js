@@ -7,7 +7,7 @@ import VueGitHubButtons from 'vue-github-buttons'
 import VueToc from 'vue-toc'
 import VueGtag from "vue-gtag"
 
-Vue.component('vue-toc', VueToc)
+Vue.component('VueToc', VueToc)
 
 import 'vue-github-buttons/dist/vue-github-buttons.css'
 

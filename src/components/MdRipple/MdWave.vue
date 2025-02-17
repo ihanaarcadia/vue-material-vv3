@@ -1,5 +1,9 @@
 <template>
-  <transition name="md-ripple" @after-enter="end" appear>
+  <transition
+    name="md-ripple"
+    appear
+    @after-enter="end"
+  >
     <span v-if="animating" />
   </transition>
 </template>
@@ -20,6 +24,7 @@
     mounted: function () {
       this.animating = true
     },
+    emits: ['md-end'],
     methods: {
       end () {
         this.animating = false

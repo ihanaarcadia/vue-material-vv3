@@ -16,6 +16,7 @@
         default: () => ({})
       }
     },
+    emits: ['md-active'],
     data: () => ({
       popperInstance: null,
       originalParentEl: null,
@@ -50,6 +51,12 @@
           this.createPopper()
         }
       }
+    },
+    beforeUnmount () {
+      this.killPopper()
+    },
+    mounted () {
+      this.resetPopper()
     },
     methods: {
       getPopperOptions () {
@@ -104,23 +111,17 @@
         }
       }
     },
-    beforeDestroy () {
-      this.killPopper()
-    },
-    mounted () {
-      this.resetPopper()
-    },
     render (createElement) {
       return createElement(MdPortal, {
         props: {
           ...this.$attrs
         },
         on: {
-          ...this.$listeners,
+          
           'md-initial-parent': this.setOriginalParent,
           'md-destroy': this.killPopper
         }
-      }, this.$slots.default)
+      }, this.$slots.default())
     }
   }
 </script>

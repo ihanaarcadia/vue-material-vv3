@@ -14,8 +14,8 @@
         staticClass: 'md-content',
         class: [this.$mdActiveTheme],
         attrs: this.$attrs,
-        on: this.$listeners
-      }, this.$slots.default)
+        
+      }, this.$slots.default())
     }
   })
 </script>

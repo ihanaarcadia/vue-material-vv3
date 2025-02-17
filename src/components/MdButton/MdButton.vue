@@ -49,7 +49,7 @@
         on: {
           'update:mdRippleActive': active => this.rippleActive = active,
         }
-      }, this.$slots.default)
+      }, this.$slots.default())
       let buttonAttrs = {
         staticClass: 'md-button',
         class: [
@@ -66,7 +66,7 @@
           type: !this.href && (this.type || 'button')
         },
         on: {
-          ...this.$listeners,
+          
           touchstart: event => {
             if (this.rippleWorks) {
               this.rippleActive = event

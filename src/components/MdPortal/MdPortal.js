@@ -62,6 +62,7 @@ export default {
       }
     }
   },
+  emits: ['md-destroy','md-initial-parent'],
   methods: {
     getTransitionDuration (el) {
       const duration = window.getComputedStyle(el).transitionDuration
@@ -141,7 +142,7 @@ export default {
     }
   },
   render (createElement) {
-    const defaultSlot = this.$slots.default
+    const defaultSlot = this.$slots.default()
 
     if (defaultSlot && defaultSlot[0]) {
       return defaultSlot[0]

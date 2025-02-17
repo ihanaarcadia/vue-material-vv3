@@ -1,5 +1,10 @@
 <template>
-  <md-toolbar class="md-app-toolbar" v-bind="$attrs" v-on="$listeners" :class="toolbarClasses" :style="toolbarStyles">
+  <md-toolbar
+    class="md-app-toolbar"
+    v-bind="$attrs"
+    :class="toolbarClasses"
+    :style="toolbarStyles"
+  >
     <slot />
   </md-toolbar>
 </template>

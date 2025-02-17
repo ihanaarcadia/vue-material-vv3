@@ -1,10 +1,30 @@
 <template>
-  <md-popover :md-settings="popperSettings" md-active>
-    <transition name="md-datepicker-dialog" appear @enter="setContentStyles" @after-leave="resetDate">
-      <div tabindex="-1" class="md-datepicker-dialog" :class="[$mdActiveTheme]">
+  <md-popover
+    :md-settings="popperSettings"
+    md-active
+  >
+    <transition
+      name="md-datepicker-dialog"
+      appear
+      @enter="setContentStyles"
+      @after-leave="resetDate"
+    >
+      <div
+        tabindex="-1"
+        class="md-datepicker-dialog"
+        :class="[$mdActiveTheme]"
+      >
         <div class="md-datepicker-header">
-          <span class="md-datepicker-year-select" :class="{ 'md-selected': currentView === 'year' }" @click="currentView = 'year'">{{ selectedYear }}</span>
-          <div class="md-datepicker-date-select" :class="{ 'md-selected': currentView !== 'year' }" @click="currentView = 'day'">
+          <span
+            class="md-datepicker-year-select"
+            :class="{ 'md-selected': currentView === 'year' }"
+            @click="currentView = 'year'"
+          >{{ selectedYear }}</span>
+          <div
+            class="md-datepicker-date-select"
+            :class="{ 'md-selected': currentView !== 'year' }"
+            @click="currentView = 'day'"
+          >
             <strong class="md-datepicker-dayname">{{ shortDayName }}, </strong>
             <strong class="md-datepicker-monthname">{{ shortMonthName }}</strong>
             <strong class="md-datepicker-day">{{ currentDay }}</strong>
@@ -13,30 +33,68 @@
 
         <div class="md-datepicker-body">
           <transition name="md-datepicker-body-header">
-            <div class="md-datepicker-body-header" v-if="currentView === 'day'">
-              <md-button class="md-dense md-icon-button" @click="previousMonth">
+            <div
+              v-if="currentView === 'day'"
+              class="md-datepicker-body-header"
+            >
+              <md-button
+                class="md-dense md-icon-button"
+                @click="previousMonth"
+              >
                 <md-arrow-left-icon />
               </md-button>
 
-              <md-button class="md-dense md-icon-button" @click="nextMonth">
+              <md-button
+                class="md-dense md-icon-button"
+                @click="nextMonth"
+              >
                 <md-arrow-right-icon />
               </md-button>
             </div>
           </transition>
 
-          <div class="md-datepicker-body-content" :style="contentStyles">
+          <div
+            class="md-datepicker-body-content"
+            :style="contentStyles"
+          >
             <transition name="md-datepicker-view">
-              <transition-group class="md-datepicker-panel md-datepicker-calendar" :class="calendarClasses" tag="div" name="md-datepicker-month" v-if="currentView === 'day'">
-                <div class="md-datepicker-panel md-datepicker-month" v-for="month in [currentDate]" :key="month.getMonth()">
-                  <md-button class="md-dense md-datepicker-month-trigger" @click="currentView = 'month'">{{ currentMonthName }} {{ currentYear }}</md-button>
+              <transition-group
+                v-if="currentView === 'day'"
+                class="md-datepicker-panel md-datepicker-calendar"
+                :class="calendarClasses"
+                tag="div"
+                name="md-datepicker-month"
+              >
+                <div
+                  v-for="month in [currentDate]"
+                  :key="month.getMonth()"
+                  class="md-datepicker-panel md-datepicker-month"
+                >
+                  <md-button
+                    class="md-dense md-datepicker-month-trigger"
+                    @click="currentView = 'month'"
+                  >
+                    {{ currentMonthName }} {{ currentYear }}
+                  </md-button>
 
                   <div class="md-datepicker-week">
-                     <span v-for="(day, index) in filteredShorterDays" :key="index">{{ day }}</span>
+                    <span
+                      v-for="(day, index) in filteredShorterDays"
+                      :key="index"
+                    >{{ day }}</span>
                   </div>
 
                   <div class="md-datepicker-days">
-                    <span class="md-datepicker-empty" v-for="day in prefixEmptyDays" :key="'day-empty-'+day"></span>
-                    <div class="md-datepicker-day" v-for="day in daysInMonth" :key="'day-'+day">
+                    <span
+                      v-for="day in prefixEmptyDays"
+                      :key="'day-empty-'+day"
+                      class="md-datepicker-empty"
+                    />
+                    <div
+                      v-for="day in daysInMonth"
+                      :key="'day-'+day"
+                      class="md-datepicker-day"
+                    >
                       <span
                         class="md-datepicker-day-button"
                         :class="{
@@ -44,42 +102,64 @@
                           'md-datepicker-today': isToday(day),
                           'md-datepicker-disabled': isDisabled(day)
                         }"
-                        @click="selectDate(day)">{{ day }}</span>
+                        @click="selectDate(day)"
+                      >{{ day }}</span>
                     </div>
                   </div>
                 </div>
               </transition-group>
 
-              <div class="md-datepicker-panel md-datepicker-month-selector" v-else-if="currentView === 'month'">
-                <md-button class="md-datepicker-year-trigger" @click="currentView = 'year'">{{ currentYear }}</md-button>
+              <div
+                v-else-if="currentView === 'month'"
+                class="md-datepicker-panel md-datepicker-month-selector"
+              >
+                <md-button
+                  class="md-datepicker-year-trigger"
+                  @click="currentView = 'year'"
+                >
+                  {{ currentYear }}
+                </md-button>
                 <span
-                  class="md-datepicker-month-button"
                   v-for="(month, index) in locale.months"
+                  :key="month"
+                  class="md-datepicker-month-button"
                   :class="{
                     'md-datepicker-selected': currentMonthName === month
                   }"
-                  :key="month"
-                  @click="switchMonth(index)">{{ month }}</span>
+                  @click="switchMonth(index)"
+                >{{ month }}</span>
               </div>
 
               <keep-alive v-else-if="currentView === 'year'">
                 <md-content class="md-datepicker-panel md-datepicker-year-selector md-scrollbar">
                   <span
-                    class="md-datepicker-year-button"
                     v-for="year in availableYears"
+                    :key="year"
+                    class="md-datepicker-year-button"
                     :class="{
                       'md-datepicker-selected': currentYear === year
                     }"
-                    :key="year"
-                    @click="switchYear(year)">{{ year }}</span>
+                    @click="switchYear(year)"
+                  >{{ year }}</span>
                 </md-content>
               </keep-alive>
             </transition>
           </div>
 
           <md-dialog-actions class="md-datepicker-body-footer">
-            <md-button class="md-primary" @click="onCancel">{{ locale.cancel }}</md-button>
-            <md-button v-if="!mdImmediately" class="md-primary" @click="onConfirm">{{ locale.confirm }}</md-button>
+            <md-button
+              class="md-primary"
+              @click="onCancel"
+            >
+              {{ locale.cancel }}
+            </md-button>
+            <md-button
+              v-if="!mdImmediately"
+              class="md-primary"
+              @click="onConfirm"
+            >
+              {{ locale.confirm }}
+            </md-button>
           </md-dialog-actions>
         </div>
       </div>
@@ -263,6 +343,7 @@
         })
       }
     },
+    emits: ['update:mdDate','md-closed'],
     methods: {
       setContentStyles () {
         const months = getElements(this.$el, '.md-datepicker-month')

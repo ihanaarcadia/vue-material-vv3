@@ -1,6 +1,12 @@
 <template>
-  <splash-container splash class="home-page">
-    <div id="splash" class="home-splash">
+  <splash-container
+    splash
+    class="home-page"
+  >
+    <div
+      id="splash"
+      class="home-splash"
+    >
       <home-header />
       <ad-manager />
       <home-features />
@@ -31,14 +37,6 @@
       HomeSponsors,
       AdManager
     },
-    methods: {
-      scrollDown (target) {
-        window.scroll({
-          ...target,
-          behavior: 'smooth'
-        })
-      }
-    },
     mounted () {
       if (this.$route.hash === '#premium') {
         const premiumEl = document.querySelector('#premium')
@@ -49,6 +47,14 @@
             left: 0
           })
         }, 100)
+      }
+    },
+    methods: {
+      scrollDown (target) {
+        window.scroll({
+          ...target,
+          behavior: 'smooth'
+        })
       }
     }
   }

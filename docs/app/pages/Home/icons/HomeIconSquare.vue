@@ -1,8 +1,8 @@
 <template>
   <home-icon class="home-icon-square">
-    <div class="square"></div>
-    <div class="square"></div>
-    <div class="square"></div>
+    <div class="square" />
+    <div class="square" />
+    <div class="square" />
   </home-icon>
 </template>
 

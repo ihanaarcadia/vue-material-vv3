@@ -1,8 +1,20 @@
 <template>
-  <md-menu-item :class="optionClasses" :disabled="isDisabled" @click="setSelection">
-    <md-checkbox class="md-primary" v-model="isChecked" v-if="MdSelect.multiple" :disabled="isDisabled" />
+  <md-menu-item
+    :class="optionClasses"
+    :disabled="isDisabled"
+    @click="setSelection"
+  >
+    <md-checkbox
+      v-if="MdSelect.multiple"
+      v-model="isChecked"
+      class="md-primary"
+      :disabled="isDisabled"
+    />
 
-    <span class="md-list-item-text" ref="text">
+    <span
+      ref="text"
+      class="md-list-item-text"
+    >
       <slot />
     </span>
   </md-menu-item>
@@ -13,15 +25,15 @@
 
   export default {
     name: 'MdOption',
-    props: {
-      value: [String, Number, Boolean],
-      disabled: Boolean
-    },
     inject: {
       MdSelect: {},
       MdOptgroup: {
         default: {}
       }
+    },
+    props: {
+      value: [String, Number, Boolean],
+      disabled: Boolean
     },
     data: () => ({
       uniqueId: 'md-option-' + MdUuid(),
@@ -65,13 +77,20 @@
         this.isChecked = val
       }
     },
+    updated () {
+      this.setItem()
+    },
+    created () {
+      this.setItem()
+      this.setIsSelected()
+    },
     methods: {
       getTextContent () {
         if (this.$el) {
           return this.$el.textContent.trim()
         }
 
-        const slot = this.$slots.default
+        const slot = this.$slots.default()
 
         return slot ? slot[0].text.trim() : ''
       },
@@ -104,13 +123,6 @@
       setItem () {
         this.$set(this.MdSelect.items, this.key, this.getTextContent())
       }
-    },
-    updated () {
-      this.setItem()
-    },
-    created () {
-      this.setItem()
-      this.setIsSelected()
     }
   }
 </script>

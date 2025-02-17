@@ -1,30 +1,32 @@
 <template>
   <md-menu
+    v-model:md-active="showSelect"
     class="md-select"
     :class="{ 'md-disabled': disabled }"
     :md-close-on-select="false"
-    :md-active.sync="showSelect"
     :md-offset-x="offset.x"
     :md-offset-y="offset.y"
     :md-dense="mdDense"
-    @md-closed="onClose">
+    @md-closed="onClose"
+  >
     <md-input
-      class="md-input md-select-value"
-      v-model="MdSelect.label"
       ref="input"
+      v-model="MdSelect.label"
+      class="md-input md-select-value"
       readonly
       :disabled="disabled"
       :required="required"
       :placeholder="placeholder"
-      v-on="inputListeners"
       v-bind="attrs"
+      v-on="inputListeners"
       @focus.prevent="onFocus"
       @blur.prevent="removeHighlight"
       @click="openSelect"
       @keydown.down="openSelect"
       @keydown.enter="openSelect"
-      @keydown.space="openSelect"  />
-    <md-drop-down-icon @click.native="openSelect" />
+      @keydown.space="openSelect"
+    />
+    <md-drop-down-icon @click="openSelect" />
 
     <keep-alive>
       <md-menu-content
@@ -32,17 +34,33 @@
         class="md-select-menu"
         :md-content-class="mdClass"
         :style="menuStyles"
-        @enter="onMenuEnter">
+        @enter="onMenuEnter"
+      >
         <slot v-if="showSelect" />
       </md-menu-content>
     </keep-alive>
 
-    <div v-if="!showSelect" v-show="false">
+    <div
+      v-if="!showSelect"
+      v-show="false"
+    >
       <slot />
     </div>
 
-    <input class="md-input-fake" v-model="model" :disabled="disabled" readonly tabindex="-1" />
-    <select readonly v-model="model" v-bind="attributes" tabindex="-1" ref="selectEl"></select>
+    <input
+      v-model="model"
+      class="md-input-fake"
+      :disabled="disabled"
+      readonly
+      tabindex="-1"
+    >
+    <select
+      v-bind="attributes"
+      ref="selectEl"
+      v-model="model"
+      readonly
+      tabindex="-1"
+    />
   </md-menu>
 </template>
 
@@ -69,6 +87,12 @@
       MdDropDownIcon
     },
     mixins: [MdFieldMixin],
+    inject: ['MdField'],
+    
+    
+    
+    
+    
     props: {
       mdDense: Boolean,
       mdClass: String,
@@ -76,7 +100,7 @@
       id: String,
       name: String
     },
-    inject: ['MdField'],
+    emits: ['md-opened','md-closed','md-selected'],
     data () {
       return {
         menuStyles: {},
@@ -98,11 +122,6 @@
         }
       }
     },
-    provide () {
-      const MdSelect = this.MdSelect
-
-      return { MdSelect }
-    },
     computed: {
       attrs () {
         return {
@@ -113,7 +132,7 @@
       },
       inputListeners () {
         return {
-          ...this.$listeners,
+          
           input: undefined
         }
       }
@@ -137,6 +156,17 @@
           this.$nextTick(this.initialLocalValueByDefault)
         }
       }
+    },
+    mounted () {
+      this.showSelect = false
+      this.setFieldContent()
+
+      this.$nextTick().then(() => {
+        this.didMount = true
+      })
+    },
+    updated () {
+      this.setFieldContent()
     },
     methods: {
       elHasScroll (el) {
@@ -294,17 +324,6 @@
       isInvalidValue () {
         return this.$refs.selectEl.validity ? this.$refs.selectEl.validity.badInput : false
       }
-    },
-    mounted () {
-      this.showSelect = false
-      this.setFieldContent()
-
-      this.$nextTick().then(() => {
-        this.didMount = true
-      })
-    },
-    updated () {
-      this.setFieldContent()
     }
   }
 </script>

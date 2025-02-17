@@ -1,12 +1,17 @@
 <template>
-  <tr class="md-table-row" :class="rowClasses" @click="onClick" v-on="$listeners">
+  <tr
+    class="md-table-row"
+    :class="rowClasses"
+    @click="onClick"
+  >
     <md-table-cell-selection
+      v-if="selectableCount"
       :value="isMultipleSelected"
-      @input="selected => selected ? addSelection() : removeSelection()"
       :md-disabled="mdDisabled"
       :md-selectable="mdSelectable === 'multiple'"
       :md-row-id="mdIndex"
-      v-if="selectableCount" />
+      @input="selected => selected ? addSelection() : removeSelection()"
+    />
     <slot />
   </tr>
 </template>
@@ -20,18 +25,19 @@
     components: {
       MdTableCellSelection
     },
+    inject: ['MdTable'],//
     props: {
-      mdIndex: [Number, String],
-      mdId: [Number, String],
-      mdSelectable: {
+      mdIndex: {type: [Number, String],default: () => 0},
+      mdId: {type: [Number, String],default: () => 0},
+      mdSelectable: { default: () => "",
         type: [String],
         ...MdPropValidator('md-selectable', ['multiple', 'single'])
       },
       mdDisabled: Boolean,
       mdAutoSelect: Boolean,
-      mdItem: [Array, Object]
+      mdItem: {type: [Array, Object],default: () => []}
     },
-    inject: ['MdTable'],
+    
     data: () => ({
       index: null
     }),
@@ -80,6 +86,15 @@
         this.removeSelectableItem(before)
         this.$nextTick(this.addSelectableItem)
       }
+    },
+    created () {
+      this.$nextTick(() => {
+        this.addSelectableItem()
+        this.MdTable.selectingMode = this.mdSelectable
+      })
+    },
+    beforeUnmount () {
+      this.removeSelectableItem()
     },
     methods: {
       onClick () {
@@ -132,15 +147,6 @@
           this.MdTable.selectable = this.MdTable.selectable.filter(item => item !== target)
         }
       }
-    },
-    created () {
-      this.$nextTick(() => {
-        this.addSelectableItem()
-        this.MdTable.selectingMode = this.mdSelectable
-      })
-    },
-    beforeDestroy () {
-      this.removeSelectableItem()
     }
   }
 </script>

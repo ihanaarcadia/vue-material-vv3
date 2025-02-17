@@ -1,5 +1,8 @@
 <template>
-  <div class="md-card" :class="[$mdActiveTheme, cardClasses]">
+  <div
+    class="md-card"
+    :class="[$mdActiveTheme, cardClasses]"
+  >
     <slot />
   </div>
 </template>
@@ -9,6 +12,15 @@
 
   export default new MdComponent({
     name: 'MdCard',
+    
+    
+    
+    
+    provide () {
+      return {
+        MdCard: this.MdCard
+      }
+    },
     props: {
       mdWithHover: Boolean
     },
@@ -17,11 +29,7 @@
         expand: false
       }
     }),
-    provide () {
-      return {
-        MdCard: this.MdCard
-      }
-    },
+    
     computed: {
       cardClasses () {
         return {

@@ -1,5 +1,8 @@
 <template>
-  <i class="md-svg-loader" v-html="html"></i>
+  <i
+    class="md-svg-loader"
+    v-html="html"
+  />
 </template>
 
 <script>
@@ -13,6 +16,7 @@
         required: true
       }
     },
+    emits: ['md-loaded'],
     data: () => ({
       html: null,
       error: null
@@ -22,6 +26,9 @@
         this.html = null
         this.loadSVG()
       }
+    },
+    mounted () {
+      this.loadSVG()
     },
     methods: {
       isSVG (mimetype) {
@@ -73,9 +80,6 @@
           this.setHtml()
         }
       }
-    },
-    mounted () {
-      this.loadSVG()
     }
   }
 </script>

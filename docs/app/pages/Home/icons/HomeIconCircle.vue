@@ -4,8 +4,8 @@
       <md-ripple md-centered />
     </div>
 
-    <div class="circle"></div>
-    <div class="circle"></div>
+    <div class="circle" />
+    <div class="circle" />
   </home-icon>
 </template>
 

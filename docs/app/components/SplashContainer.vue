@@ -1,6 +1,9 @@
 <template>
   <transition name="splash-container">
-    <div class="splash-container main-container" :class="{ centered }">
+    <div
+      class="splash-container main-container"
+      :class="{ centered }"
+    >
       <slot />
     </div>
   </transition>
@@ -32,7 +35,7 @@
       this.setPageTitle(this.title)
       this.setSplashMode(true)
     },
-    beforeDestroy () {
+    beforeUnmount () {
       this.setSplashMode(false)
     }
   }

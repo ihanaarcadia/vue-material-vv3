@@ -3,7 +3,7 @@
     name: 'MdCardExpandTrigger',
     inject: ['MdCard'],
     render (createElement) {
-      const [trigger] = this.$slots.default
+      const [trigger] = this.$slots.default()
       const staticClass = ' md-card-expand-trigger'
       let listeners = {
         click: () => {

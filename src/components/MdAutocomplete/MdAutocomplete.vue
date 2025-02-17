@@ -1,33 +1,72 @@
 <template>
-  <md-field class="md-autocomplete" :class="fieldClasses" md-clearable :md-inline="isBoxLayout">
-    <md-menu md-direction="bottom-start" :md-dense="mdDense" md-align-trigger md-full-width :md-active.sync="showMenu">
+  <md-field
+    class="md-autocomplete"
+    :class="fieldClasses"
+    md-clearable
+    :md-inline="isBoxLayout"
+  >
+    <md-menu
+      v-model:md-active="showMenu"
+      md-direction="bottom-start"
+      :md-dense="mdDense"
+      md-align-trigger
+      md-full-width
+    >
       <md-input
-        v-model="searchTerm"
         v-bind="$attrs"
         :id="mdInputId"
+        v-model="searchTerm"
         :name="mdInputName"
         :maxlength="mdInputMaxlength"
         :placeholder="mdInputPlaceholder"
         @focus.stop="openOnFocus"
         @blur="hideOptions"
         @input="onInput"
-        @click.stop.prevent="openOnFocus" />
+        @click.stop.prevent="openOnFocus"
+      />
 
-      <md-menu-content :class="contentClasses" v-show="hasScopedEmptySlot || hasFilteredItems">
-        <div class="md-autocomplete-loading" v-if="isPromisePending">
-          <md-progress-spinner :md-diameter="40" :md-stroke="4" md-mode="indeterminate" />
+      <md-menu-content
+        v-show="hasScopedEmptySlot || hasFilteredItems"
+        :class="contentClasses"
+      >
+        <div
+          v-if="isPromisePending"
+          class="md-autocomplete-loading"
+        >
+          <md-progress-spinner
+            :md-diameter="40"
+            :md-stroke="4"
+            md-mode="indeterminate"
+          />
         </div>
 
-        <div class="md-autocomplete-items" v-if="hasFilteredItems">
-          <md-menu-item v-for="(item, index) in getOptions()" :key="index" @click="selectItem(item, $event)">
-            <slot name="md-autocomplete-item" :item="item" :term="searchTerm" v-if="$scopedSlots['md-autocomplete-item']" />
-            <template v-else>{{ item }}</template>
+        <div
+          v-if="hasFilteredItems"
+          class="md-autocomplete-items"
+        >
+          <md-menu-item
+            v-for="(item, index) in getOptions()"
+            :key="index"
+            @click="selectItem(item, $event)"
+          >
+            <slot
+              v-if="$slots['md-autocomplete-item']"
+              name="md-autocomplete-item"
+              :item="item"
+              :term="searchTerm"
+            />
+            <template v-else>
+              {{ item }}
+            </template>
           </md-menu-item>
         </div>
 
         <md-menu-item v-else-if="hasScopedEmptySlot">
           <div class="md-autocomplete-empty">
-            <slot name="md-autocomplete-empty" :term="searchTerm" />
+            <slot
+              name="md-autocomplete-empty"
+              :term="searchTerm"
+            />
           </div>
         </md-menu-item>
       </md-menu-content>
@@ -75,6 +114,7 @@
       mdInputMaxlength: [String, Number],
       mdInputPlaceholder: [String, Number]
     },
+    emits: ['input','md-changed','md-opened','md-closed','md-selected'],
     data () {
       return {
         searchTerm: this.value,
@@ -124,7 +164,7 @@
         return this.filteredStaticOptions.length > 0 || this.filteredAsyncOptions.length > 0
       },
       hasScopedEmptySlot () {
-        return this.$scopedSlots['md-autocomplete-empty']
+        return this.$slots['md-autocomplete-empty']
       }
     },
     watch: {
